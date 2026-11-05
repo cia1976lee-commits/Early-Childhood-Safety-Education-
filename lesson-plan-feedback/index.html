@@ -1,0 +1,922 @@
+<title>모의수업 계획안 피드백</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 왼쪽은 계획안 원고(종이), 오른쪽은 기준별 검토 메모. 좁은 화면에서는 위아래로 쌓임. */
+:root {
+  --paper: #F3F5F1;
+  --surface: #FFFFFF;
+  --sunken: #EAEEE8;
+  --ink: #1C2521;
+  --muted: #5A6660;
+  --line: #D6DDD6;
+  --accent: #1E5A4C;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E1EDE7;
+  --ok: #2B7A4B;  --ok-bg: #E2F1E6;
+  --warn: #9A5B00; --warn-bg: #FAEED6;
+  --bad: #B0362E;  --bad-bg: #F8E2DE;
+  --open: #1E5A4C; --closed: #B0362E; --suggest: #5E50A0;
+  --focus: #2C7FB8;
+  --f-display: "Gowun Batang", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111614; --surface: #19201D; --sunken: #141A17; --ink: #E4EBE7; --muted: #98A49E; --line: #2B3531;
+    --accent: #7FC6AF; --accent-ink: #0E1A16; --accent-soft: #1C2F28;
+    --ok: #74CB92; --ok-bg: #17301F; --warn: #E5B25B; --warn-bg: #33270F; --bad: #EF8C82; --bad-bg: #3A1D1A;
+    --open: #7FC6AF; --closed: #EF8C82; --suggest: #B3A7EE; --focus: #7DB8E8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111614; --surface: #19201D; --sunken: #141A17; --ink: #E4EBE7; --muted: #98A49E; --line: #2B3531;
+  --accent: #7FC6AF; --accent-ink: #0E1A16; --accent-soft: #1C2F28;
+  --ok: #74CB92; --ok-bg: #17301F; --warn: #E5B25B; --warn-bg: #33270F; --bad: #EF8C82; --bad-bg: #3A1D1A;
+  --open: #7FC6AF; --closed: #EF8C82; --suggest: #B3A7EE; --focus: #7DB8E8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--f-body); font-size: 15px; line-height: 1.6;
+  word-break: keep-all; overflow-wrap: anywhere;
+}
+.wrap {
+  max-width: 1240px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; font-weight: 700; }
+p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Header */
+.masthead { display: grid; gap: 10px; margin-bottom: 22px; }
+.eyebrow { font-size: 12.5px; letter-spacing: .06em; color: var(--muted); }
+.masthead h1 { font-size: clamp(26px, 4vw, 36px); line-height: 1.25; }
+.masthead .lead { color: var(--muted); max-width: 62ch; }
+.rules { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.rule { font-size: 13px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+.rule b { color: var(--accent); font-weight: 600; }
+
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); gap: 22px; align-items: start; }
+@media (max-width: 920px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Plan (left) */
+.plan { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.plan-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.tabs { display: inline-flex; background: var(--sunken); border-radius: 8px; padding: 3px; gap: 2px; }
+.tab { border: 0; background: transparent; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; color: var(--muted); }
+.tab[aria-selected="true"] { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 7px; padding: 6px 12px; cursor: pointer; font-size: 13.5px; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+.btn.primary:hover { filter: brightness(1.07); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.plan-body { padding: 16px; display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 600; font-size: 14px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.field label .tag { font-weight: 500; font-size: 11.5px; color: var(--accent); background: var(--accent-soft); padding: 1px 7px; border-radius: 4px; }
+.field .help { font-size: 12.5px; color: var(--muted); }
+.row2 { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; }
+@media (max-width: 480px) { .row2 { grid-template-columns: minmax(0, 1fr); } }
+input[type="text"], select, textarea {
+  width: 100%; border: 1px solid var(--line); background: var(--paper); border-radius: 7px; padding: 8px 10px; font-size: 14.5px;
+}
+textarea { resize: vertical; min-height: 84px; line-height: 1.65; }
+textarea#full { min-height: 460px; }
+.drop { border: 1.5px dashed var(--line); border-radius: 8px; padding: 12px; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+.drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.file-note { font-size: 12.5px; color: var(--muted); }
+.sample-note { font-size: 12.5px; color: var(--warn); background: var(--warn-bg); padding: 6px 10px; border-radius: 6px; }
+
+/* Feedback (right) */
+.feedback { display: grid; gap: 14px; }
+.summary { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; }
+.summary-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
+.summary h2 { font-size: 20px; }
+.counts { font-size: 13.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.counts b { font-family: var(--f-mono); font-weight: 500; }
+.chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+@media (max-width: 480px) { .chips { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.chip { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 7px; border: 1px solid transparent; font-size: 13.5px; cursor: pointer; text-align: left; background: var(--sunken); }
+.chip .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.s-ok   { --s: var(--ok);   --sbg: var(--ok-bg); }
+.s-warn { --s: var(--warn); --sbg: var(--warn-bg); }
+.s-bad  { --s: var(--bad);  --sbg: var(--bad-bg); }
+.chip.s-ok, .chip.s-warn, .chip.s-bad { background: var(--sbg); }
+.chip .dot { background: var(--s); }
+.chip .st { margin-left: auto; font-size: 12px; color: var(--s); font-weight: 600; }
+
+.alert { border-radius: 8px; padding: 10px 12px; font-size: 13.5px; background: var(--bad-bg); color: var(--ink); border: 1px solid var(--bad); }
+.alert b { color: var(--bad); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; scroll-margin-top: 12px; }
+.card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.card-head h3 { font-size: 17px; }
+.card-head .point { flex-basis: 100%; font-size: 13px; color: var(--muted); }
+.pill { font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; color: var(--s); background: var(--sbg); }
+.rubric { font-size: 11.5px; color: var(--muted); border: 1px solid var(--line); padding: 1px 7px; border-radius: 4px; margin-left: auto; font-variant-numeric: tabular-nums; }
+.card-body { padding: 12px 16px 14px; display: grid; gap: 12px; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13.5px; }
+.checks li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; }
+.checks .mk { font-family: var(--f-mono); }
+.checks .yes .mk { color: var(--ok); }
+.checks .no { color: var(--muted); }
+.checks .no .mk { color: var(--bad); }
+.checks .found { color: var(--muted); font-size: 12.5px; }
+.qs { display: grid; gap: 6px; }
+.qs-title { font-size: 12.5px; color: var(--muted); letter-spacing: .04em; }
+.qs ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.qs li { font-family: var(--f-display); font-size: 15.5px; line-height: 1.55; }
+.empty-q { font-size: 13.5px; color: var(--ok); }
+
+/* 발문 분석 */
+.bar { display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: var(--sunken); }
+.bar span { display: block; height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
+.qlist { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.qlist li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: baseline; font-size: 14px; }
+.qt { font-size: 11.5px; font-weight: 600; padding: 1px 7px; border-radius: 4px; border: 1px solid currentColor; white-space: nowrap; }
+.qt.open { color: var(--open); } .qt.closed { color: var(--closed); } .qt.suggest { color: var(--suggest); }
+.areas { display: flex; flex-wrap: wrap; gap: 6px; }
+.area { font-size: 12.5px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.area.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+.note { font-size: 12.5px; color: var(--muted); }
+
+/* AI */
+.ai .card-head { background: var(--accent-soft); }
+.ai-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ai-status { font-size: 13.5px; color: var(--muted); }
+.ai-out { display: grid; gap: 12px; }
+.ai-row { display: grid; gap: 4px; padding-top: 10px; border-top: 1px solid var(--line); }
+.ai-row:first-child { border-top: 0; padding-top: 0; }
+.ai-row .ai-title { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-weight: 600; font-size: 14.5px; }
+.ai-row .ev { font-size: 13px; color: var(--muted); }
+.ai-row .ev q { font-style: normal; color: var(--ink); }
+.priority { font-family: var(--f-display); font-size: 16.5px; line-height: 1.55; padding: 10px 12px; border-left: 3px solid var(--accent); background: var(--sunken); border-radius: 0 6px 6px 0; }
+.strengths { margin: 0; padding-left: 20px; font-size: 14px; }
+
+.foot-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.toast { font-size: 13px; color: var(--ok); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+@media (prefers-reduced-motion: no-preference) {
+  .chip, .btn, .tab { transition: background-color .15s, border-color .15s; }
+}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">교과교재연구 및 지도법 · 모의수업 1단계 계획</p>
+    <h1>모의수업 계획안 피드백</h1>
+    <p class="lead">놀이중심 계획안 피드백 기준 6가지로 계획안을 점검하고, 고칠 방향을 질문으로 안내합니다. 왼쪽에 계획안을 쓰거나 붙여 넣으면 오른쪽 점검 결과가 바로 바뀝니다.</p>
+    <div class="rules" aria-label="운영 원칙">
+      <span class="rule"><b>질문으로 안내</b> · 계획안을 대신 써 주지 않아요</span>
+      <span class="rule"><b>참고 의견</b> · 최종 평가는 교수자가 합니다</span>
+      <span class="rule"><b>개인정보 금지</b> · 유아 실명·사진은 넣지 마세요</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- 계획안 입력 -->
+    <section class="plan" aria-labelledby="plan-title">
+      <div class="plan-head">
+        <h2 id="plan-title" class="sr">계획안</h2>
+        <div class="tabs" role="tablist" aria-label="입력 방식">
+          <button class="tab" role="tab" id="tab-form" aria-selected="true" aria-controls="pane-form">항목별 작성</button>
+          <button class="tab" role="tab" id="tab-full" aria-selected="false" aria-controls="pane-full">전체 붙여넣기·파일</button>
+        </div>
+        <div class="tools">
+          <button class="btn" id="btn-sample" type="button">예시 계획안</button>
+          <button class="btn" id="btn-clear" type="button">비우기</button>
+        </div>
+      </div>
+
+      <div class="plan-body">
+        <p class="sample-note" id="sample-note">지금 보이는 내용은 기능을 보여 주기 위한 <b>예시 계획안</b>입니다. ‘비우기’를 누르고 본인 계획안을 입력하세요.</p>
+        <p class="sample-note" id="clear-confirm" hidden>입력한 내용을 모두 지울까요? <button class="btn" id="btn-clear-yes" type="button">지우기</button> <button class="btn" id="btn-clear-no" type="button">취소</button></p>
+
+        <form id="pane-form" role="tabpanel" aria-labelledby="tab-form" class="plan-body" style="padding:0" autocomplete="off">
+          <div class="row2">
+            <div class="field">
+              <label for="f-title">활동명</label>
+              <input type="text" id="f-title" name="title">
+            </div>
+            <div class="field">
+              <label for="f-age">대상 연령</label>
+              <select id="f-age" name="age">
+                <option value="만 3세">만 3세</option>
+                <option value="만 4세">만 4세</option>
+                <option value="만 5세">만 5세</option>
+                <option value="혼합연령">혼합연령</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-play">놀이 출발점 <span class="tag">기준 1</span></label>
+            <p class="help">유아들이 실제로 어떤 놀이를 하다가 이 관심이 드러났는지, 본 장면과 유아의 말을 적어 주세요.</p>
+            <textarea id="f-play" name="play"></textarea>
+          </div>
+          <div class="field">
+            <label for="f-materials">교재교구 및 환경 <span class="tag">기준 2</span></label>
+            <p class="help">자료 목록과 함께, 여러 방식으로 쓸 수 있는지와 안전하게 준비한 점을 적어 주세요.</p>
+            <textarea id="f-materials" name="materials"></textarea>
+          </div>
+          <div class="field">
+            <label for="f-flow">놀이 지원 흐름</label>
+            <p class="help">놀이가 어떻게 시작되고 이어질지, 교사가 어디서 무엇을 지원할지 적어 주세요.</p>
+            <textarea id="f-flow" name="flow" style="min-height:120px"></textarea>
+          </div>
+          <div class="field">
+            <label for="f-questions">예상 발문과 유아 반응별 대응 <span class="tag">기준 4</span></label>
+            <p class="help">발문은 물음표(?)로 끝나게 한 줄에 하나씩 적으면 자동 분류가 정확해집니다. 예상 반응과 대응도 함께 적어 주세요.</p>
+            <textarea id="f-questions" name="questions" style="min-height:120px"></textarea>
+          </div>
+          <div class="field">
+            <label for="f-alt">유아 반응에 따른 대안·확장 <span class="tag">기준 3</span></label>
+            <textarea id="f-alt" name="alt"></textarea>
+          </div>
+          <div class="field">
+            <label for="f-areas">누리과정 5개 영역 연계 <span class="tag">기준 5</span></label>
+            <p class="help">영역 이름만 나열하기보다, 놀이의 어느 장면에서 그 경험이 일어나는지 적어 주세요.</p>
+            <textarea id="f-areas" name="areas"></textarea>
+          </div>
+          <div class="field">
+            <label for="f-obs">관찰·기록 계획 <span class="tag">기준 6</span></label>
+            <textarea id="f-obs" name="obs"></textarea>
+          </div>
+        </form>
+
+        <div id="pane-full" role="tabpanel" aria-labelledby="tab-full" class="plan-body" style="padding:0" hidden>
+          <div class="drop" id="drop">
+            <span>계획안 파일(.docx, .txt)을 여기에 끌어다 놓거나 선택하세요.</span>
+            <label class="btn" for="file">파일 선택</label>
+            <input type="file" id="file" accept=".docx,.txt,.md" class="sr">
+          </div>
+          <p class="file-note" id="file-note">한글(HWP) 파일은 한글에서 ‘다른 이름으로 저장 → .docx’로 바꾸거나, 내용을 복사해 아래에 붙여 넣으세요.</p>
+          <div class="field">
+            <label for="full">계획안 전체 내용</label>
+            <textarea id="full" name="full" placeholder="계획안 전체를 붙여 넣으세요. 이 모드에서는 문서 전체에서 기준별 내용을 찾아 점검합니다."></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 피드백 -->
+    <section class="feedback" aria-labelledby="fb-title" aria-live="polite">
+      <div class="summary">
+        <div class="summary-top">
+          <h2 id="fb-title">기준별 자동 점검</h2>
+          <span class="counts" id="counts"></span>
+        </div>
+        <div class="chips" id="chips"></div>
+        <p class="note">표시는 키워드·문장 형태를 바탕으로 한 1차 점검입니다. 판정보다 아래 질문에 답해 보며 계획안을 고치는 데 쓰세요.</p>
+      </div>
+      <div id="privacy"></div>
+      <div id="cards" class="feedback"></div>
+
+      <article class="card ai" id="ai-card">
+        <div class="card-head">
+          <h3>Claude 심화 피드백</h3>
+          <span class="rubric">참고 의견</span>
+          <p class="point">계획안의 실제 문장을 근거로 기준별 진단과 질문을 받아 봅니다. 수정 문장은 제시하지 않습니다.</p>
+        </div>
+        <div class="card-body">
+          <div class="ai-actions">
+            <button class="btn primary" id="ai-run" type="button" disabled>심화 피드백 받기</button>
+            <button class="btn" id="ai-stop" type="button" hidden>멈추기</button>
+            <span class="ai-status" id="ai-status">Claude 연결을 확인하고 있어요…</span>
+          </div>
+          <div class="ai-out" id="ai-out"></div>
+        </div>
+      </article>
+
+      <div class="foot-actions">
+        <button class="btn" id="btn-copy" type="button">피드백 전체 복사</button>
+        <span class="toast" id="toast" role="status"></span>
+      </div>
+      <textarea id="copy-fallback" class="sr" aria-hidden="true" tabindex="-1"></textarea>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+'use strict';
+
+/* ───────── 예시 계획안 (기능 시연용) ───────── */
+const SAMPLE = {
+  title: '우리가 만든 길을 안전하게 건너요',
+  age: '만 4세',
+  play: '지난주부터 쌓기 영역에서 유아들이 블록을 길게 이어 도로를 만들고 장난감 자동차를 굴리며 놀고 있다. 자동차끼리 부딪히자 한 유아가 "여기 건널목 만들자! 사람도 건너야 해."라고 말했고, 다른 유아들이 종이를 길게 잘라 바닥에 붙이기 시작했다.',
+  materials: '종이블록, 단위블록, 종이테이프(흰색), 빈 상자, 장난감 자동차, 색 셀로판지, 휴지심, 사람 모형',
+  flow: '1. 유아들이 만든 도로와 건널목을 함께 둘러보며 이야기를 나눈다.\n2. 교사가 신호등 사진을 보여 주고 신호등의 색과 뜻을 설명한다.\n3. 빈 상자와 셀로판지로 신호등을 만든다.\n4. 친구와 역할을 나누어 운전자와 보행자가 되어 길 건너기 놀이를 한다.\n5. 오늘 놀이에서 재미있었던 점을 이야기 나눈다.',
+  questions: '신호등에는 무슨 색이 있지?\n초록불일 때 건너는 거 맞지?\n길을 건널 때 어떻게 하면 안전할까?\n우리 길에 또 무엇이 필요할까?\n자동차가 갑자기 오면 어떻게 될까?\n다 같이 건너 볼까?\n→ 유아가 "빨간불에도 뛰면 돼요"라고 말하면 왜 그렇게 생각했는지 다시 물어본다.',
+  alt: '유아들이 신호등 만들기에 관심이 없으면 자동차 경주 놀이로 바꾼다.',
+  areas: '신체운동·건강, 사회관계, 자연탐구',
+  obs: '유아들의 참여도를 관찰한다.'
+};
+const FIELDS = ['title','age','play','materials','flow','questions','alt','areas','obs'];
+
+/* ───────── 누리과정 5개 영역 키워드 ───────── */
+const AREAS = [
+  { name: '신체운동·건강', re: /신체|몸으로|몸을|움직|달리|뛰|걷|균형|대근육|소근육|건강|안전하게|안전한|위생|손\s?씻|굴리|던지|오르|기어/ },
+  { name: '의사소통', re: /이야기\s?(나누|하)|말하|말로|듣고|들어|읽|쓰기|글자|그림책|동화|어휘|대화|끼적|낱말|표지판/ },
+  { name: '사회관계', re: /친구와|친구들과|함께|협력|협동|차례|규칙|약속|배려|역할을 나누|가족|이웃|감정|기분|도와|나누어|양보/ },
+  { name: '예술경험', re: /그리|만들|노래|음악|리듬|춤|악기|꾸미|색칠|극놀이|역할놀이|조형|감상|소리를 내|표현해/ },
+  { name: '자연탐구', re: /탐색|탐구|비교|세어|수\s?세기|숫자|모양|크기|무게|길이|분류|자연물|날씨|식물|동물|실험|측정|패턴|궁금|관찰해|알아보/ }
+];
+
+/* ───────── 발문 분류 ───────── */
+const Q_CLOSED = /몇\s?(개|명|번|살|층|칸)|무슨\s?색|맞(지|아|니|나요|죠|을까)|(이건|이것은|이게|저건|저게|이거)\s?(무엇|뭐|뭘까)|알(지|겠|았|고 있)|이름이\s?뭐|누구(지|일까|예요|야)|어느\s?(것|쪽)이\s?맞|(이|가)\s?(맞|틀)/;
+const Q_OPEN = /어떻게|왜|어째서|무슨\s?생각|어떤\s?생각|생각해|생각하니|생각은|느낌|느꼈|느껴|만약|라면\??$|다면|다른\s?방법|또\s?(무엇|뭐|어떤)|어떤|무엇을|무엇이|뭐가|뭘|어디|어떨까|어땠|이유/;
+const Q_SUGGEST = /볼까|볼래|해\s?보자|하자|할까요|할까\?|해\s?줄래|시다/;
+
+function extractQuestions(text) {
+  const out = [];
+  const lines = text.split(/\n+/);
+  for (const raw of lines) {
+    const parts = raw.split(/(?<=[?？])/);
+    for (let p of parts) {
+      if (!/[?？]\s*["”’']?\s*$/.test(p.trim())) continue;
+      // 물음표 앞 문장만 남김
+      p = p.replace(/^.*[.!。](?=[^.!。]*[?？])/, '');
+      p = p.replace(/^[\s\-–—•·*→▶①-⑳\d.)(]+/, '')
+           .replace(/^(T|t|교사|발문\s?\d*|예상\s?발문)\s*[:：)]\s*/, '')
+           .replace(/^["“‘']+|["”’']+$/g, '').trim();
+      if (p.length >= 3) out.push(p);
+    }
+  }
+  return out.slice(0, 40);
+}
+function classifyQuestion(q) {
+  if (Q_CLOSED.test(q)) return 'closed';
+  if (Q_SUGGEST.test(q) && !/어떻게|왜|무엇|어떤/.test(q)) return 'suggest';
+  if (Q_OPEN.test(q)) return 'open';
+  if (Q_SUGGEST.test(q)) return 'suggest';
+  return 'closed';
+}
+const Q_LABEL = { open: '개방형', closed: '폐쇄형', suggest: '제안·권유' };
+
+/* ───────── 기준 정의 (기획안 3-2 계획안 피드백 기준) ───────── */
+const has = (re) => (t) => re.test(t);
+const CRITERIA = [
+  {
+    key: 'play', no: 1, name: '놀이 출발점', point: '유아의 실제 놀이·관심에서 출발했는가', rubric: '계획·준비 20점',
+    src: ['play'],
+    checks: [
+      { label: '유아의 실제 놀이·관심을 관찰한 내용이 있다', test: has(/관찰|놀이하|놀고 있|놀던|놀이 중|놀이에서|놀이를 하|하는 모습|관심을 보|흥미를 보|좋아하|자주 하|만들고|굴리|가지고 놀/),
+        q: '이 활동은 유아들이 어떤 놀이를 하는 중에 떠올린 것인가요? 교사가 실제로 본 장면을 한 가지 떠올려 보세요.' },
+      { label: '언제·어디서 본 장면인지 구체적이다', test: has(/영역|놀이터|바깥|실외|실내|교실|등원|하원|점심|간식|산책|지난|어제|오늘|며칠|요즘|최근|아침|자유놀이/),
+        q: '그 장면은 언제, 어느 놀이 영역(또는 장소)에서 일어났나요?' },
+      { label: '유아의 말이나 행동을 그대로 옮겼다', test: has(/["“”‘’「」]|라고\s?(말|했|물)|라며|하며 말/),
+        q: '그때 유아가 한 말이나 행동을 그대로 옮긴다면 어떤 문장이 될까요? 그 말에서 유아의 어떤 궁금증이 보이나요?' },
+      { label: '교사가 정한 주제에서 시작하지 않았다', test: (t) => !/(생활\s?주제|이번\s?주\s?주제|주제(는|로|에 따라)|교사가\s?(준비|제시|소개|정한))/.test(t) || /관찰|놀이하|놀고 있/.test(t),
+        q: '출발점이 교사가 정한 주제라면, 그 주제가 유아의 놀이 안에서는 어떤 모습으로 드러났나요?' }
+    ]
+  },
+  {
+    key: 'materials', no: 2, name: '교재교구', point: '개방형인가(여러 방식으로 활용 가능한가), 안전한가', rubric: '교재교구 20점 · 안전·배려 10점',
+    src: ['materials'],
+    checks: [
+      { label: '여러 방식으로 쓸 수 있는 열린 자료가 있다', test: has(/자연물|재활용|상자|블록|천|스카프|끈|컵|뚜껑|휴지심|나뭇|솔방울|돌|모래|물|점토|찰흙|종이|테이프|루즈\s?파츠|loose|셀로판|빨대|병|통|막대/i),
+        q: '이 자료로 유아가 교사가 생각한 방법이 아닌 다른 놀이를 한다면, 어떤 놀이가 나올 수 있을까요?' },
+      { label: '자료의 활용 방식·배치를 설명했다', test: has(/여러\s?(방법|방식|가지)|자유롭게|다양하게|활용|변형|조합|다르게|배치|비치|놓아|제공|선택/),
+        q: '자료를 어디에, 어떤 방식으로 놓아 두면 유아가 스스로 골라 쓸 수 있을까요?' },
+      { label: '안전 점검 내용이 있다', test: has(/안전|날카|모서리|삼킴|질식|작은\s?부품|무독성|소독|위생|미끄|파손|알레르기|점검|확인|테이프로\s?감|마감/),
+        q: '대상 연령 유아가 이 자료를 입에 넣거나, 던지거나, 세게 당긴다면 어떤 위험이 생길 수 있나요? 미리 무엇을 확인해야 할까요?' },
+      { label: '여러 감각을 쓰는 자료다', test: has(/촉감|소리|냄새|감각|만지|두드리|흔들|빛|투명|색\s?셀로판|셀로판|거울|질감|무게/),
+        q: '보고, 듣고, 만지는 감각 가운데 이 자료가 열어 주는 감각은 무엇인가요? 빠진 감각을 더할 방법이 있을까요?' },
+      { label: '정답이 정해진 활동지·도안 위주가 아니다', test: (t) => !/활동지|워크북|학습지|색칠\s?도안|도안|정답/.test(t),
+        q: '활동지나 도안이 꼭 필요한가요? 그 자료가 없다면 유아가 무엇을 더 스스로 결정하게 될까요?' }
+    ]
+  },
+  {
+    key: 'flex', no: 3, name: '유연성', point: '유아 반응에 따른 대안·확장 방향이 제시되었는가', rubric: '수업 운영 20점',
+    src: ['alt', 'flow'],
+    checks: [
+      { label: '유아 반응을 조건으로 한 대안이 있다', test: has(/만약|경우|다면|라면|않으면|없으면|원하면|제안하면|반응하면|하면\s/),
+        q: '유아가 "이거 말고 다른 거 하고 싶어요"라고 하면, 그 제안을 놀이 안으로 어떻게 받아들이시겠어요?' },
+      { label: '대안이 두 가지 이상이다', test: (t) => (t.match(/만약|경우|다면|라면|않으면|없으면|원하면|제안하면|반응하면/g) || []).length >= 2,
+        q: '지금 적은 대안 말고, 놀이가 예상보다 빨리 끝나거나 훨씬 길어질 때는 흐름을 어떻게 조정할까요?' },
+      { label: '다음 놀이로 이어지는 확장 방향이 있다', test: has(/확장|이어서|이어지|다음\s?(놀이|날|시간)|연계|발전|후속|더\s?나아가|내일/),
+        q: '오늘 놀이가 내일이나 다음 주에는 어떤 방향으로 이어질 수 있을까요? 유아의 어떤 반응이 그 신호가 될까요?' },
+      { label: '흥미를 잃은 유아에 대한 지원이 있다', test: has(/흥미를\s?(잃|보이지)|관심이\s?(없|떨어)|지루|참여하지\s?않|하기\s?싫|다른\s?놀이를|개별/),
+        q: '참여하지 않거나 흥미를 잃은 유아가 있다면, 그 유아의 지금 관심을 어떻게 알아보고 지원하시겠어요?' },
+      { label: '대안이 교사가 정한 다른 활동으로 바꾸기에 그치지 않는다', test: (t) => !/(로|으로)\s?바꾼다|(로|으로)\s?변경|(로|으로)\s?전환한다/.test(t) || /유아(가|의)\s?(제안|의견|선택|아이디어)/.test(t),
+        q: '대안이 교사가 미리 정한 다른 활동으로 바꾸는 것이라면, 유아의 의견이 그 선택에 들어갈 자리는 어디일까요?' }
+    ]
+  },
+  {
+    key: 'interaction', no: 4, name: '상호작용 계획', point: '예상 발문이 개방형인가, 유아 반응별 대응이 있는가', rubric: '상호작용·발문 30점',
+    src: ['questions'],
+    checks: [
+      { label: '예상 발문이 3개 이상 있다', test: (t, c) => c.questions.length >= 3,
+        q: '놀이의 시작, 한창일 때, 마무리에서 각각 어떤 질문을 하게 될지 떠올려 보세요.' },
+      { label: '개방형 발문이 절반 이상이다', test: (t, c) => c.questions.length > 0 && c.qCount.open / c.questions.length >= 0.5,
+        q: null /* 폐쇄형 발문별 질문으로 대체 */ },
+      { label: '유아의 예상 반응과 교사 대응이 짝지어 있다', test: has(/반응|대답하면|라고\s?(하면|말하면)|말하면|유아\s?:|→|대응|되물|다시\s?물/),
+        q: '각 발문에 유아가 어떻게 대답할지 두세 가지 예상해 보고, 대답마다 어떻게 받아 줄지 적어 보세요.' },
+      { label: '예상 밖 반응을 받아들이는 계획이 있다', test: has(/예상\s?(밖|과\s?다른)|엉뚱|틀린|다른\s?대답|그렇게\s?생각|인정|수용|받아\s?(주|들)/),
+        q: '유아가 엉뚱한 대답을 하거나 아무 말도 하지 않을 때, 어떤 말로 받아 주시겠어요?' },
+      { label: '기다림·경청 계획이 있다', test: has(/기다|들어\s?주|경청|생각할\s?시간|충분한\s?시간|천천히/),
+        q: '질문한 뒤 유아가 생각할 시간을 얼마나 주실 건가요? 기다리는 동안 교사는 무엇을 하고 있을까요?' }
+    ]
+  },
+  {
+    key: 'integration', no: 5, name: '통합성', point: '5개 영역이 놀이 안에서 자연스럽게 연결되는가', rubric: '계획·준비 20점',
+    src: ['areas', 'flow', 'questions', 'play', 'materials', 'alt'],
+    checks: [
+      { label: '놀이 흐름에서 3개 이상 영역의 경험이 보인다', test: (t, c) => c.areaHits.length >= 3,
+        q: '놀이 흐름의 각 장면에서 유아는 몸을 움직이고, 말하고, 친구와 관계 맺고, 표현하고, 탐구하나요? 빠진 경험은 무엇인가요?' },
+      { label: '적어 둔 영역이 실제 놀이 흐름에서 확인된다', test: (t, c) => c.declaredMissing.length === 0,
+        q: null /* 영역별 질문으로 대체 */ },
+      { label: '영역 이름만 나열하지 않고 연결 장면을 설명했다', test: (t, c) => c.mode === 'full' || c.f.areas.replace(/[\s,·ㆍ/、및과와\-]|신체운동|건강|의사소통|사회관계|예술경험|자연탐구|영역/g, '').length >= 10,
+        q: '영역 이름 옆에, 놀이의 어느 순간에 그 영역의 경험이 일어나는지 한 문장씩 적는다면 무엇이라고 쓰시겠어요?' }
+    ]
+  },
+  {
+    key: 'observation', no: 6, name: '관찰·기록', point: '무엇을 관찰하고 어떻게 기록할지 계획했는가', rubric: '계획·준비 20점',
+    src: ['obs'],
+    checks: [
+      { label: '관찰할 유아의 행동·말이 구체적이다', test: (t) => /(어떻게|무엇을|어떤)\s?.{0,20}(하는지|사용하는지|말하는지|표현하는지|해결하는지)|발화|행동|문제\s?해결|상호작용|협력하는|규칙을/.test(t),
+        q: '이 놀이에서 꼭 보고 싶은 유아의 모습을 한 문장으로 쓴다면 무엇인가요? ‘참여도’ 대신 눈에 보이는 행동으로 적어 보세요.' },
+      { label: '기록 방법이 정해져 있다', test: has(/일화|사진|동영상|영상|녹음|체크리스트|메모|포스트잇|포트폴리오|작품|관찰지|평정|기록지|놀이\s?기록/),
+        q: '놀이를 지원하면서 동시에 기록하려면 어떤 방법(일화 메모, 사진, 작품 등)이 현실적일까요?' },
+      { label: '기록의 활용 계획이 있다', test: has(/다음\s?놀이|지원|반영|공유|가정|부모|평가|계획에|활용|이어/),
+        q: '기록한 내용은 다음 놀이 지원이나 가정과의 소통에 어떻게 쓰일까요?' },
+      { label: '관찰 시점이나 대상이 정해져 있다', test: has(/누가|개별|소그룹|모든\s?유아|특히|시점|놀이\s?중|과정|처음|마무리|동안/),
+        q: '놀이의 어느 시점에, 어떤 유아(또는 무리)를 중심으로 관찰하시겠어요?' }
+    ]
+  }
+];
+
+/* ───────── 개인정보 점검 ───────── */
+const NAME_STOP = new Set(['또래','모든','여러','다른','개별','일부','해당','전체','몇몇','대상','남자','여자','다수','소수','각각','우리','많은','작은','어린','같은','좋은','싫은','나머지','어떤','그런','이런','저런','한명','두명','세명','관심','교사','주변','처음','새로운','혼자']);
+function privacyFindings(text) {
+  const out = [];
+  if (/01[016789][-\s.]?\d{3,4}[-\s.]?\d{4}/.test(text)) out.push('전화번호로 보이는 숫자');
+  if (/\d{6}[-\s]?[1-4]\d{6}/.test(text)) out.push('주민등록번호로 보이는 숫자');
+  if (/\.(jpe?g|png|heic|gif)\b|사진\s?(첨부|붙임)/i.test(text)) out.push('유아 사진 파일 언급');
+  const names = new Set();
+  const re = /(^|[\s,(“"‘'])([가-힣]{2,3})\s?(유아|어린이|원아)(가|는|이|의|와|에게|도)?/g;
+  let m;
+  while ((m = re.exec(text))) {
+    const w = m[2];
+    if (NAME_STOP.has(w) || /(는|한|된|던|있는|없는|하는|않는|의|세|반)$/.test(w)) continue;
+    names.add(w + ' ' + m[3]);
+  }
+  if (names.size) out.push('실명으로 보일 수 있는 표현: ' + [...names].slice(0, 5).map(n => '‘' + n + '’').join(', '));
+  return out;
+}
+
+/* ───────── 분석 ───────── */
+function readForm() {
+  const f = {};
+  for (const k of FIELDS) f[k] = (document.getElementById('f-' + k).value || '').trim();
+  return f;
+}
+function planText(state) {
+  if (state.mode === 'full') return state.full;
+  const f = state.form;
+  return [
+    '활동명: ' + f.title, '대상 연령: ' + f.age,
+    '[놀이 출발점]\n' + f.play, '[교재교구 및 환경]\n' + f.materials, '[놀이 지원 흐름]\n' + f.flow,
+    '[예상 발문과 유아 반응별 대응]\n' + f.questions, '[유아 반응에 따른 대안·확장]\n' + f.alt,
+    '[누리과정 5개 영역 연계]\n' + f.areas, '[관찰·기록 계획]\n' + f.obs
+  ].join('\n\n');
+}
+
+function analyze(state) {
+  const full = state.mode === 'full';
+  const f = state.form;
+  const all = full ? state.full : FIELDS.map(k => f[k]).join('\n');
+  const qSrc = full ? state.full : f.questions;
+  const questions = extractQuestions(qSrc).map(q => ({ text: q, type: classifyQuestion(q) }));
+  const qCount = { open: 0, closed: 0, suggest: 0 };
+  questions.forEach(q => qCount[q.type]++);
+
+  // 영역: 실제 놀이 장면(영역 칸 제외)에서 근거를 찾음
+  const evidence = full ? state.full : [f.play, f.materials, f.flow, f.questions, f.alt].join('\n');
+  const areaHits = AREAS.filter(a => a.re.test(evidence)).map(a => a.name);
+  const declaredSrc = full ? state.full : f.areas;
+  const declared = AREAS.filter(a => declaredSrc.replace(/\s/g, '').includes(a.name.split('·')[0])).map(a => a.name);
+  const declaredMissing = declared.filter(n => !areaHits.includes(n));
+
+  const ctx = { mode: state.mode, f, questions: questions.map(q => q.text), qCount, areaHits, declared, declaredMissing };
+
+  const results = CRITERIA.map(c => {
+    const text = full ? state.full : c.src.map(k => f[k]).join('\n');
+    const own = full ? state.full : f[c.src[0]];
+    const empty = own.replace(/\s/g, '').length < 4 && !(c.key === 'interaction' && questions.length);
+    const checks = c.checks.map(ch => ({ label: ch.label, ok: !empty && !!ch.test(text, ctx), q: ch.q }));
+    let qs = [];
+    for (const ch of checks) if (!ch.ok && ch.q) qs.push(ch.q);
+    if (c.key === 'interaction' && !empty) {
+      const closed = questions.filter(q => q.type === 'closed').slice(0, 2);
+      if (!checks[1].ok && closed.length) {
+        closed.forEach(q => qs.splice(1, 0, `‘${q.text}’ — 유아가 여러 가지로 대답할 수 있으려면 이 질문을 어떤 말로 시작하면 좋을까요?`));
+      } else if (!checks[1].ok) {
+        qs.splice(1, 0, '유아가 정답 없이 자기 생각을 말할 수 있는 질문은 무엇일까요? ‘어떻게’, ‘왜’, ‘만약’으로 시작해 보세요.');
+      }
+    }
+    if (c.key === 'integration' && declaredMissing.length) {
+      qs.unshift(`${declaredMissing.map(n => '‘' + n + '’').join(', ')} 영역을 적어 두셨는데, 놀이 흐름의 어느 장면에서 유아가 그 경험을 하게 되나요?`);
+    }
+    if (c.key === 'play' && !empty && own.length < 60) {
+      qs.push('출발점이 짧게 적혀 있어요. 이 놀이가 며칠 동안 어떻게 이어졌는지 조금 더 적어 볼까요?');
+    }
+    const passed = checks.filter(x => x.ok).length;
+    const ratio = passed / checks.length;
+    const status = empty ? 'bad' : ratio >= 0.75 ? 'ok' : ratio >= 0.4 ? 'warn' : 'bad';
+    if (empty) qs = [c.checks[0].q || '이 항목을 먼저 작성해 주세요.'];
+    return { ...c, checks, passed, status, empty, qs: [...new Set(qs)].slice(0, 4) };
+  });
+
+  return { results, questions, qCount, areaHits, declared, privacy: privacyFindings(all), hasContent: all.replace(/\s/g, '').length > 10 };
+}
+
+/* ───────── 화면 그리기 ───────── */
+const ST = { ok: { label: '충족', mark: '●' }, warn: { label: '보완', mark: '◐' }, bad: { label: '미흡', mark: '○' } };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+
+let lastAnalysis = null;
+
+function render(a) {
+  lastAnalysis = a;
+  const n = { ok: 0, warn: 0, bad: 0 };
+  a.results.forEach(r => n[r.status]++);
+  $('counts').innerHTML = `충족 <b>${n.ok}</b> · 보완 <b>${n.warn}</b> · 미흡 <b>${n.bad}</b>`;
+
+  $('chips').innerHTML = a.results.map(r =>
+    `<button type="button" class="chip s-${r.status}" data-target="c-${r.key}" aria-label="${r.no}. ${esc(r.name)} ${ST[r.status].label}">
+      <span class="dot" aria-hidden="true"></span><span>${r.no}. ${esc(r.name)}</span><span class="st">${ST[r.status].label}</span>
+    </button>`).join('');
+
+  $('privacy').innerHTML = a.privacy.length
+    ? `<div class="alert" role="alert"><b>개인정보 확인</b> · ${a.privacy.map(esc).join(' / ')}. 실명이라면 ‘A 유아’처럼 바꾸고, 사진은 넣지 마세요. 대학 AI 가이드라인에 따라 유아 개인정보는 입력하지 않습니다.</div>`
+    : '';
+
+  const cards = a.results.map(r => {
+    const checks = r.checks.map(ch =>
+      `<li class="${ch.ok ? 'yes' : 'no'}"><span class="mk" aria-hidden="true">${ch.ok ? '✓' : '–'}</span><span>${esc(ch.label)}<span class="sr">${ch.ok ? ' (확인됨)' : ' (확인 안 됨)'}</span></span></li>`).join('');
+    const qs = r.qs.length
+      ? `<div class="qs"><p class="qs-title">스스로 답해 볼 질문</p><ol>${r.qs.map(q => `<li>${esc(q)}</li>`).join('')}</ol></div>`
+      : `<p class="empty-q">점검 항목이 모두 확인됐어요. 동료와 계획안을 바꿔 읽고, 이 기준에서 더 나아질 점을 이야기해 보세요.</p>`;
+    let extra = '';
+    if (r.key === 'interaction') extra = renderQuestions(a);
+    if (r.key === 'integration') extra = `<div class="areas" aria-label="놀이 흐름에서 확인된 영역">${AREAS.map(x => `<span class="area ${a.areaHits.includes(x.name) ? 'on' : ''}">${x.name}${a.areaHits.includes(x.name) ? '' : '<span class="sr"> (확인 안 됨)</span>'}</span>`).join('')}</div><p class="note">강조된 영역은 놀이 출발점·자료·흐름·발문·대안에서 관련 경험이 확인된 영역입니다.</p>`;
+    return `<article class="card s-${r.status}" id="c-${r.key}">
+      <div class="card-head">
+        <h3>${r.no}. ${esc(r.name)}</h3>
+        <span class="pill">${ST[r.status].label} · ${r.empty ? '미작성' : r.passed + '/' + r.checks.length}</span>
+        <span class="rubric">평가표 ${esc(r.rubric)}</span>
+        <p class="point">${esc(r.point)}</p>
+      </div>
+      <div class="card-body">
+        <ul class="checks">${checks}</ul>
+        ${extra}
+        ${qs}
+      </div>
+    </article>`;
+  }).join('');
+  $('cards').innerHTML = cards;
+}
+
+function renderQuestions(a) {
+  const t = a.questions.length;
+  if (!t) return `<p class="note">물음표(?)로 끝나는 발문을 찾지 못했어요. 발문을 한 줄에 하나씩, 물음표로 끝나게 적어 주세요.</p>`;
+  const pct = (k) => Math.round(a.qCount[k] / t * 100);
+  return `<div style="display:grid;gap:8px">
+    <div class="bar" role="img" aria-label="개방형 ${a.qCount.open}개, 폐쇄형 ${a.qCount.closed}개, 제안·권유 ${a.qCount.suggest}개">
+      <span style="width:${pct('open')}%;background:var(--open)"></span>
+      <span style="width:${pct('suggest')}%;background:var(--suggest)"></span>
+      <span style="width:${pct('closed')}%;background:var(--closed)"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--open)"></i>개방형 ${a.qCount.open}개 (${pct('open')}%)</span>
+      <span><i style="background:var(--suggest)"></i>제안·권유 ${a.qCount.suggest}개</span>
+      <span><i style="background:var(--closed)"></i>폐쇄형 ${a.qCount.closed}개</span>
+    </div>
+    <ul class="qlist">${a.questions.map(q => `<li><span class="qt ${q.type}">${Q_LABEL[q.type]}</span><span>${esc(q.text)}</span></li>`).join('')}</ul>
+    <p class="note">문장 형태로 자동 분류한 결과입니다. 맥락에 따라 다를 수 있으니 자기성찰지의 발문 분류와 함께 확인하세요.</p>
+  </div>`;
+}
+
+/* ───────── 상태·입력 ───────── */
+const state = { mode: 'form', form: {}, full: '' };
+const STORE_KEY = 'lpf-draft-v1';
+let isSample = false;
+
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify({ mode: state.mode, form: state.form, full: state.full, isSample })); } catch (e) {}
+}
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); return s && typeof s === 'object' ? s : null; } catch (e) { return null; }
+}
+function fillForm(obj) {
+  for (const k of FIELDS) {
+    const el = $('f-' + k);
+    el.value = obj[k] ?? (k === 'age' ? '만 4세' : '');
+  }
+}
+function setMode(mode) {
+  state.mode = mode;
+  $('tab-form').setAttribute('aria-selected', String(mode === 'form'));
+  $('tab-full').setAttribute('aria-selected', String(mode === 'full'));
+  $('pane-form').hidden = mode !== 'form';
+  $('pane-full').hidden = mode !== 'full';
+}
+function setSample(flag) { isSample = flag; $('sample-note').hidden = !flag; }
+
+let timer;
+function update(immediate) {
+  clearTimeout(timer);
+  const run = () => {
+    state.form = readForm();
+    state.full = $('full').value;
+    render(analyze(state));
+    save();
+  };
+  immediate ? run() : (timer = setTimeout(run, 250));
+}
+
+$('pane-form').addEventListener('input', () => { if (isSample) setSample(false); update(); });
+$('pane-form').addEventListener('submit', (e) => e.preventDefault());
+$('full').addEventListener('input', () => { if (isSample) setSample(false); update(); });
+$('tab-form').addEventListener('click', () => { setMode('form'); update(true); });
+$('tab-full').addEventListener('click', () => {
+  if (!$('full').value.trim()) $('full').value = planText({ mode: 'form', form: readForm() });
+  setMode('full'); update(true);
+});
+$('btn-sample').addEventListener('click', () => {
+  fillForm(SAMPLE); $('full').value = ''; setMode('form'); setSample(true); clearAI(); update(true);
+});
+$('btn-clear').addEventListener('click', () => { $('clear-confirm').hidden = false; $('btn-clear-yes').focus(); });
+$('btn-clear-no').addEventListener('click', () => { $('clear-confirm').hidden = true; });
+$('btn-clear-yes').addEventListener('click', () => {
+  fillForm({ age: '만 4세' }); $('full').value = ''; setSample(false); clearAI();
+  $('clear-confirm').hidden = true; update(true); $('f-title').focus();
+});
+$('chips').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-target]');
+  if (b) $(b.dataset.target)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+});
+
+/* ───────── 파일 읽기 (.docx / .txt) ───────── */
+async function readDocx(buf) {
+  const dv = new DataView(buf);
+  let eocd = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 66000); i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('docx 형식이 아니에요.');
+  const count = dv.getUint16(eocd + 10, true);
+  let p = dv.getUint32(eocd + 16, true);
+  const dec = new TextDecoder();
+  for (let n = 0; n < count; n++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    const method = dv.getUint16(p + 10, true);
+    const csize = dv.getUint32(p + 20, true);
+    const nlen = dv.getUint16(p + 28, true), elen = dv.getUint16(p + 30, true), clen = dv.getUint16(p + 32, true);
+    const local = dv.getUint32(p + 42, true);
+    const name = dec.decode(new Uint8Array(buf, p + 46, nlen));
+    p += 46 + nlen + elen + clen;
+    if (name !== 'word/document.xml') continue;
+    const start = local + 30 + dv.getUint16(local + 26, true) + dv.getUint16(local + 28, true);
+    const data = new Uint8Array(buf, start, csize);
+    let xml;
+    if (method === 0) xml = dec.decode(data);
+    else if (method === 8) {
+      if (typeof DecompressionStream === 'undefined') throw new Error('이 브라우저는 docx 읽기를 지원하지 않아요. 내용을 복사해 붙여 넣어 주세요.');
+      xml = await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text();
+    } else throw new Error('지원하지 않는 압축 방식이에요.');
+    return docxXmlToText(xml);
+  }
+  throw new Error('문서 본문을 찾지 못했어요.');
+}
+function docxXmlToText(xml) {
+  const doc = new DOMParser().parseFromString(xml, 'application/xml');
+  const body = [...doc.getElementsByTagName('*')].find(el => el.localName === 'body');
+  if (!body) return '';
+  const lines = [];
+  const paraText = (p) => {
+    let s = '';
+    const walk = (el) => {
+      for (const c of el.children) {
+        if (c.localName === 't') s += c.textContent;
+        else if (c.localName === 'tab') s += '\t';
+        else if (c.localName === 'br') s += '\n';
+        else walk(c);
+      }
+    };
+    walk(p);
+    return s;
+  };
+  const walk = (el) => {
+    for (const c of el.children) {
+      if (c.localName === 'p') lines.push(paraText(c));
+      else if (c.localName === 'tbl') {
+        for (const tr of [...c.children].filter(x => x.localName === 'tr')) {
+          const cells = [...tr.children].filter(x => x.localName === 'tc')
+            .map(tc => [...tc.getElementsByTagName('*')].filter(x => x.localName === 'p').map(paraText).join(' ').trim());
+          lines.push(cells.join(' | '));
+        }
+        lines.push('');
+      } else walk(c);
+    }
+  };
+  walk(body);
+  return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+async function handleFile(file) {
+  if (!file) return;
+  const note = $('file-note');
+  try {
+    let text;
+    if (/\.docx$/i.test(file.name)) text = await readDocx(await file.arrayBuffer());
+    else if (/\.(txt|md)$/i.test(file.name)) text = await file.text();
+    else if (/\.hwpx?$/i.test(file.name)) throw new Error('한글(HWP) 파일은 바로 읽을 수 없어요. 한글에서 .docx로 저장하거나 내용을 복사해 붙여 넣어 주세요.');
+    else throw new Error('.docx 또는 .txt 파일만 읽을 수 있어요.');
+    $('full').value = text; setMode('full'); setSample(false); clearAI(); update(true);
+    note.textContent = `‘${file.name}’을(를) 불러왔어요. 표는 칸 사이를 ‘ | ’로 구분해 옮겼습니다.`;
+  } catch (e) {
+    note.textContent = e.message || '파일을 읽지 못했어요. 내용을 복사해 붙여 넣어 주세요.';
+  }
+}
+$('file').addEventListener('change', (e) => { handleFile(e.target.files[0]); e.target.value = ''; });
+const drop = $('drop');
+['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(t => drop.addEventListener(t, () => drop.classList.remove('over')));
+drop.addEventListener('drop', (e) => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); });
+
+/* ───────── Claude 심화 피드백 ───────── */
+let sample = null, aiCtl = null, aiResult = null;
+const AI_ERR = {
+  not_granted: 'Claude 사용을 허용하지 않아 심화 피드백을 받을 수 없어요. 자동 점검은 그대로 쓸 수 있습니다.',
+  rate_limited: '요청이 많아 잠시 쉬어야 해요. 1~2분 뒤에 다시 눌러 주세요.',
+  prompt_too_large: '계획안이 너무 길어요. 계획안 본문만 남기고 다시 시도해 주세요.',
+  invalid_json: '응답을 정리하지 못했어요. 한 번 더 눌러 주세요.',
+  session_expired: '로그인이 만료됐어요. 페이지를 새로고침한 뒤 다시 시도해 주세요.',
+  refused: 'Claude가 이 내용에 답하지 않았어요. 계획안 내용을 확인해 주세요.'
+};
+function clearAI() { aiResult = null; $('ai-out').innerHTML = ''; if (sample) $('ai-status').textContent = '자동 점검으로 먼저 고친 뒤 받아 보면 더 도움이 됩니다.'; }
+
+function buildPrompt(a) {
+  const auto = a.results.map(r => `- ${r.no}. ${r.name}: ${ST[r.status].label} (확인 안 된 항목: ${r.checks.filter(c => !c.ok).map(c => c.label).join(' / ') || '없음'})`).join('\n');
+  const qs = a.questions.map(q => `- [${Q_LABEL[q.type]}] ${q.text}`).join('\n') || '- (추출된 발문 없음)';
+  return `당신은 유아교육과 '교과교재연구 및 지도법' 모의수업에서 예비유아교사(온라인 성인학습자)의 계획안 1차 피드백을 돕는 조교입니다.
+2019 개정 누리과정의 놀이중심 관점에서 아래 6개 기준으로 계획안을 검토하세요.
+
+[계획안 피드백 기준]
+1. play / 놀이 출발점: 유아의 실제 놀이·관심에서 출발했는가
+2. materials / 교재교구: 개방형인가(여러 방식으로 활용 가능한가), 안전한가
+3. flex / 유연성: 유아 반응에 따른 대안·확장 방향이 제시되었는가
+4. interaction / 상호작용 계획: 예상 발문이 개방형인가, 유아 반응별 대응이 있는가
+5. integration / 통합성: 5개 영역(신체운동·건강, 의사소통, 사회관계, 예술경험, 자연탐구)이 놀이 안에서 자연스럽게 연결되는가
+6. observation / 관찰·기록: 무엇을 관찰하고 어떻게 기록할지 계획했는가
+
+[운영 원칙 — 반드시 지킬 것]
+- 계획안을 대신 써 주지 마세요. 고친 문장, 예시 발문, 완성된 대안이나 활동을 제시하지 말고, 학생이 스스로 고칠 수 있도록 생각을 이끄는 질문으로만 안내하세요.
+- 근거(evidence)는 계획안의 실제 표현을 30자 이내로 그대로 인용하세요. 해당 내용이 없으면 "해당 내용 없음"이라고 쓰세요.
+- status는 "충족"(기준을 분명히 갖춤), "보완"(일부만 있음), "미흡"(거의 없음) 중 하나입니다.
+- 아래 자동 점검 결과는 키워드 기반이라 틀릴 수 있습니다. 계획안을 직접 읽고 판단하세요.
+- 유아 실명, 연락처, 사진 등 개인정보로 보이는 내용이 있으면 privacy에 짧게 적고, 없으면 빈 문자열로 두세요.
+- 존댓말로, 성인학습자를 존중하는 어조로 씁니다. 이 피드백은 참고 의견이며 최종 평가는 교수자가 합니다.
+
+[자동 점검 결과(참고)]
+${auto}
+
+[자동 추출 발문]
+${qs}
+
+[계획안]
+${planText(state).slice(0, 14000)}
+
+다음 JSON 하나로만 답하세요. criteria는 6개 기준을 순서대로 모두 포함합니다.
+{"strengths":["계획안에서 잘된 점(1~3개, 각 한 문장)"],"criteria":[{"key":"play","status":"보완","evidence":"계획안 인용","comment":"한 문장 진단","questions":["생각을 이끄는 질문","질문"]}],"priority":"가장 먼저 고민할 한 가지를 질문 한 문장으로","privacy":""}`;
+}
+
+function renderAI(d) {
+  const by = Object.fromEntries((Array.isArray(d.criteria) ? d.criteria : []).map(c => [c.key, c]));
+  const stKey = (s) => s === '충족' ? 'ok' : s === '미흡' ? 'bad' : 'warn';
+  let html = '';
+  if (d.priority) html += `<div><p class="qs-title" style="margin-bottom:6px">가장 먼저 고민할 질문</p><p class="priority">${esc(d.priority)}</p></div>`;
+  if (Array.isArray(d.strengths) && d.strengths.length) html += `<div><p class="qs-title" style="margin-bottom:4px">잘된 점</p><ul class="strengths">${d.strengths.map(s => `<li>${esc(s)}</li>`).join('')}</ul></div>`;
+  if (d.privacy) html += `<div class="alert"><b>개인정보 확인</b> · ${esc(d.privacy)}</div>`;
+  html += `<div class="ai-out">${CRITERIA.map(c => {
+    const r = by[c.key]; if (!r) return '';
+    const k = stKey(r.status);
+    return `<div class="ai-row s-${k}">
+      <div class="ai-title">${c.no}. ${esc(c.name)} <span class="pill">${esc(r.status || '보완')}</span></div>
+      ${r.evidence ? `<p class="ev">근거: <q>${esc(r.evidence)}</q></p>` : ''}
+      ${r.comment ? `<p style="font-size:14px">${esc(r.comment)}</p>` : ''}
+      ${Array.isArray(r.questions) && r.questions.length ? `<div class="qs"><ol>${r.questions.slice(0, 3).map(q => `<li>${esc(q)}</li>`).join('')}</ol></div>` : ''}
+    </div>`;
+  }).join('')}</div>`;
+  html += `<p class="note">AI 피드백은 참고 의견입니다. 고친 계획안은 교수자 확인을 거쳐 제출하세요.</p>`;
+  $('ai-out').innerHTML = html;
+}
+
+$('ai-run').addEventListener('click', async () => {
+  if (!sample) return;
+  const a = lastAnalysis;
+  if (!a || !a.hasContent) { $('ai-status').textContent = '계획안을 먼저 입력해 주세요.'; return; }
+  if (a.privacy.length) { $('ai-status').textContent = '개인정보로 보이는 표현을 먼저 고친 뒤 보내 주세요.'; $('privacy').scrollIntoView({ block: 'center' }); return; }
+  aiCtl = new AbortController();
+  $('ai-run').disabled = true; $('ai-stop').hidden = false; $('ai-out').innerHTML = '';
+  $('ai-status').textContent = 'Claude가 계획안을 읽고 있어요. 30초~1분 정도 걸립니다…';
+  try {
+    const d = await sample.json(buildPrompt(a), { signal: aiCtl.signal, modelTier: 'default' });
+    if (!d || typeof d !== 'object') throw { code: 'invalid_json' };
+    aiResult = d; renderAI(d);
+    $('ai-status').textContent = '심화 피드백을 받았어요.';
+  } catch (e) {
+    if (e && e.code === 'cancelled') $('ai-status').textContent = '멈췄어요.';
+    else {
+      $('ai-status').textContent = AI_ERR[e && e.code] || '피드백을 받지 못했어요. 잠시 뒤 다시 시도해 주세요.';
+      if (e && e.code === 'not_granted') $('ai-run').hidden = true;
+    }
+  } finally {
+    $('ai-run').disabled = false; $('ai-stop').hidden = true;
+  }
+});
+$('ai-stop').addEventListener('click', () => aiCtl?.abort());
+
+(async () => {
+  try { sample = window.claude?.use ? await window.claude.use('sample') : null; } catch (e) { sample = null; }
+  if (sample) { $('ai-run').disabled = false; $('ai-status').textContent = '자동 점검으로 먼저 고친 뒤 받아 보면 더 도움이 됩니다.'; }
+  else { $('ai-run').hidden = true; $('ai-status').textContent = '심화 피드백은 claude.ai에서 이 페이지를 열었을 때 사용할 수 있어요. 자동 점검은 어디서나 쓸 수 있습니다.'; }
+})();
+
+/* ───────── 복사 ───────── */
+function reportText() {
+  const a = lastAnalysis; if (!a) return '';
+  const f = state.form;
+  const L = [];
+  L.push('[모의수업 계획안 피드백]');
+  if (state.mode === 'form') L.push(`활동명: ${f.title || '(미작성)'} / 대상: ${f.age}`);
+  L.push('');
+  L.push('■ 기준별 자동 점검');
+  for (const r of a.results) {
+    L.push(`${r.no}. ${r.name} — ${ST[r.status].label}${r.empty ? ' (미작성)' : ` (${r.passed}/${r.checks.length})`}`);
+    r.checks.forEach(c => L.push(`   ${c.ok ? '✓' : '–'} ${c.label}`));
+    r.qs.forEach(q => L.push(`   ? ${q}`));
+  }
+  if (a.questions.length) {
+    L.push('');
+    L.push(`■ 발문 분류: 개방형 ${a.qCount.open} · 제안·권유 ${a.qCount.suggest} · 폐쇄형 ${a.qCount.closed}`);
+    a.questions.forEach(q => L.push(`   [${Q_LABEL[q.type]}] ${q.text}`));
+  }
+  L.push(`■ 놀이 흐름에서 확인된 영역: ${a.areaHits.join(', ') || '없음'}`);
+  if (aiResult) {
+    L.push('');
+    L.push('■ Claude 심화 피드백(참고 의견)');
+    if (aiResult.priority) L.push(`가장 먼저 고민할 질문: ${aiResult.priority}`);
+    (aiResult.strengths || []).forEach(s => L.push(`   + ${s}`));
+    (aiResult.criteria || []).forEach(c => {
+      const def = CRITERIA.find(x => x.key === c.key);
+      L.push(`${def ? def.no + '. ' + def.name : c.key} — ${c.status || ''}`);
+      if (c.evidence) L.push(`   근거: "${c.evidence}"`);
+      if (c.comment) L.push(`   ${c.comment}`);
+      (c.questions || []).forEach(q => L.push(`   ? ${q}`));
+    });
+  }
+  L.push('');
+  L.push('※ 자동 점검과 AI 피드백은 참고 의견이며 최종 평가는 교수자가 합니다.');
+  return L.join('\n');
+}
+$('btn-copy').addEventListener('click', () => {
+  const text = reportText();
+  const done = (msg) => { $('toast').textContent = msg; setTimeout(() => { $('toast').textContent = ''; }, 3000); };
+  const fallback = () => {
+    const ta = $('copy-fallback'); ta.value = text; ta.select();
+    try { document.execCommand('copy'); done('복사했어요.'); } catch (e) { done('복사하지 못했어요. 내용을 직접 선택해 복사해 주세요.'); }
+  };
+  try {
+    navigator.clipboard.writeText(text).then(() => done('복사했어요. 성찰 메모나 제출 파일에 붙여 넣으세요.'), fallback);
+  } catch (e) { fallback(); }
+});
+
+/* ───────── 시작 ───────── */
+const saved = load();
+if (saved && (Object.values(saved.form || {}).some(v => v && v !== '만 4세' && String(v).trim()) || (saved.full || '').trim())) {
+  fillForm(saved.form || {}); $('full').value = saved.full || ''; setMode(saved.mode === 'full' ? 'full' : 'form'); setSample(!!saved.isSample);
+} else {
+  fillForm(SAMPLE); setMode('form'); setSample(true);
+}
+update(true);
+})();
+</script>
