@@ -43,6 +43,19 @@
 
 자동 점검은 키워드와 문장 형태를 바탕으로 한 1차 점검이므로, 판정 자체보다 보완 질문을 실마리로 활용하세요.
 
+### 웹사이트로 배포 (GitHub Pages)
+
+`main` 브랜치에 `lesson-plan-feedback/` 변경이 올라가면 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)이 [`scripts/build-pages.sh`](scripts/build-pages.sh)로 앱을 완전한 웹페이지(`_site/index.html`)로 만들어 GitHub Pages에 배포합니다. Actions 탭에서 직접 실행할 수도 있습니다.
+
+처음 한 번은 저장소 설정이 필요합니다.
+
+1. 저장소를 공개(public)로 바꾸거나 GitHub Pro 이상 플랜을 사용합니다. 무료 계정의 비공개 저장소는 Pages를 쓸 수 없습니다.
+2. **Settings → Pages → Build and deployment → Source**를 **GitHub Actions**로 바꿉니다.
+
+배포 주소: `https://cia1976lee-commits.github.io/Early-Childhood-Safety-Education-/`
+
+웹사이트 버전에서는 파일 분석, 자동 점검 보고서, Word 보고서 내려받기가 모두 됩니다. Claude 심화 피드백은 claude.ai에서 열었을 때만 작동합니다.
+
 ## 참고
 
 교육 영역은 교육부 「학교안전교육 7대 표준안」의 7대 영역(생활안전, 교통안전, 폭력예방 및 신변보호, 약물 및 사이버 중독 예방, 재난안전, 직업안전, 응급처치)을 바탕으로 유아 수준에 맞게 조정할 예정입니다.
