@@ -370,6 +370,129 @@ textarea#raw { min-height: 60vh; font-size: 13.5px; background: var(--sunken); }
 .comment { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; font-size: 14px; }
 .comment dt { font-weight: 800; }
 .comment dd { margin: 0; }
+/* ── 첫 화면: Canva '3장의 카드' 구성 — 구름 테두리 안에 올리기 · 간략 결과 · 결과물 출력 ── */
+html, body { height: 100%; }
+.stage {
+  min-height: 100%; display: grid;
+  padding-left: max(14px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px));
+  padding-block: 14px;
+}
+.cloud { position: relative; width: min(1500px, 100%); margin: 0 auto; min-height: calc(100vh - 28px); padding: 44px 56px 34px; display: grid; grid-template-rows: auto 1fr auto; gap: 22px; }
+@media (max-width: 760px) { .cloud { padding: 40px 24px 30px; } }
+.cloud::before {
+  content: ""; position: absolute; inset: 6px; z-index: 0;
+  --r: 18px;
+  background:
+    radial-gradient(circle closest-side, var(--surface) 96%, transparent 100%) left top / calc(var(--r) * 2) calc(var(--r) * 2) round no-repeat,
+    radial-gradient(circle closest-side, var(--surface) 96%, transparent 100%) left bottom / calc(var(--r) * 2) calc(var(--r) * 2) round no-repeat,
+    radial-gradient(circle closest-side, var(--surface) 96%, transparent 100%) left top / calc(var(--r) * 2) calc(var(--r) * 2) no-repeat round,
+    radial-gradient(circle closest-side, var(--surface) 96%, transparent 100%) right top / calc(var(--r) * 2) calc(var(--r) * 2) no-repeat round,
+    linear-gradient(var(--surface), var(--surface)) center / calc(100% - var(--r) * 2) calc(100% - var(--r) * 2) no-repeat;
+  filter: drop-shadow(2px 0 0 var(--outline)) drop-shadow(-2px 0 0 var(--outline)) drop-shadow(0 2px 0 var(--outline)) drop-shadow(0 -2px 0 var(--outline));
+}
+.cloud > * { position: relative; z-index: 1; }
+.cloud > .sparkle { position: absolute; z-index: 2; }
+.hero-title { text-align: center; display: grid; justify-items: center; gap: 6px; }
+.slogan { font-family: var(--f-display); font-size: 15px; padding: 3px 16px; border: 2px solid var(--outline); border-radius: 999px; background: var(--yellow); color: var(--badge-ink); }
+.hero-title h1 { font-size: clamp(44px, 5.4vw, 76px); line-height: 1.05; letter-spacing: .02em; }
+.tagline { color: var(--muted); font-size: 15px; font-weight: 700; }
+.peek-mascot { position: absolute; top: 30px; left: calc(50% - 300px); width: 96px; height: 96px; z-index: 2; transform: rotate(-8deg); }
+.peek-blob { position: absolute; top: 46px; right: calc(50% - 290px); width: 86px; height: 78px; z-index: 2; transform: rotate(6deg); }
+@media (max-width: 860px) { .peek-mascot, .peek-blob { display: none; } }
+.footnote { text-align: center; font-size: 12.5px; color: var(--muted); font-weight: 500; }
+
+.cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; align-items: stretch; width: min(1240px, 100%); margin: 0 auto; }
+@media (max-width: 980px) { .cards3 { grid-template-columns: minmax(0, 1fr); gap: 40px; } }
+/* 카드는 두 테마 모두 같은 파스텔 종이로 고정 */
+.card3 {
+  --ink: #1D1D1F; --muted: #4A5160; --outline: #1D1D1F; --surface: #FFFFFF; --sunken: #F6F8FC;
+  --ok: #17864F; --warn: #A86000; --bad: #C8352B; --memo: #FFF3B0; --memo-ink: #3B3418;
+  position: relative; color: var(--ink); background: var(--cbg);
+  border: var(--bw) solid var(--outline); border-radius: 22px; padding: 30px 22px 20px;
+  display: flex; flex-direction: column; gap: 12px; min-width: 0;
+}
+.c-yellow { --cbg: #FFE066; } .c-sky { --cbg: #B8D4FA; } .c-grey { --cbg: #ECECEC; }
+.clip { position: absolute; top: -24px; left: 50%; width: 22px; height: 44px; transform: translateX(-50%) rotate(10deg); color: #1D1D1F; }
+.step { font-size: 11px; letter-spacing: .22em; font-weight: 800; text-align: center; }
+.card3 h2 { font-size: 30px; text-align: center; line-height: 1.15; }
+.card3 .drop { flex: 1; min-height: 180px; border: 2.5px dashed var(--outline); border-radius: 16px; background: rgba(255, 255, 255, .55); display: grid; place-items: center; align-content: center; gap: 8px; padding: 18px; text-align: center; cursor: pointer; }
+.card3 .drop:hover, .card3 .drop.over { background: rgba(255, 255, 255, .92); }
+.card3 .drop .doc { width: 62px; height: 62px; }
+.card3 .drop .big { font-family: var(--f-display); font-size: 19px; line-height: 1.35; }
+.card3 .drop .types { font-size: 12px; font-weight: 800; letter-spacing: .06em; }
+.filebox { background: rgba(255, 255, 255, .75); border: 2px solid var(--outline); border-radius: 12px; padding: 8px 12px; display: grid; gap: 3px; }
+.filebox .fname { font-size: 14.5px; }
+.filebox .status { font-size: 12.5px; padding: 5px 9px; border-width: 1.5px; }
+.filebox .example { font-size: 12.5px; padding: 0; background: none; border: 0; color: var(--muted); }
+
+.s-title { text-align: center; font-weight: 800; font-size: 14px; margin-top: -4px; }
+.s-score { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 4px 8px; }
+.s-total { font-family: var(--f-display); font-size: 60px; line-height: 1; font-variant-numeric: tabular-nums; }
+.s-den { font-size: 18px; font-weight: 700; }
+.s-src { font-size: 11px; font-weight: 800; padding: 0 8px; border: 1.5px solid var(--outline); border-radius: 999px; background: #fff; align-self: center; }
+.s-areas { list-style: none; margin: 0; padding: 8px 12px; display: grid; gap: 2px; background: rgba(255, 255, 255, .8); border: 2px solid var(--outline); border-radius: 12px; }
+.s-areas li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 13.5px; font-weight: 700; padding: 2px 0; border-bottom: 1.5px dashed #C9D3E3; }
+.s-areas li:last-child { border-bottom: 0; }
+.s-areas .st { font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.s-areas .st svg { width: 16px; height: 16px; }
+.s-first { background: var(--memo); color: var(--memo-ink); border: 2px solid var(--outline); border-radius: 6px 6px 14px 6px; padding: 8px 12px; }
+.s-k { font-family: var(--f-display); font-size: 15px; }
+.s-first ol { margin: 2px 0 0; padding-left: 20px; font-size: 13px; font-weight: 700; display: grid; gap: 1px; }
+
+.outs { display: grid; gap: 12px; }
+.out { display: grid; gap: 2px; text-align: left; border: 2.5px solid var(--outline); border-radius: 16px; padding: 14px 16px 14px 54px; background: #fff; cursor: pointer; box-shadow: 0 4px 0 var(--outline); color: var(--ink); position: relative; }
+.out::before { content: "↓"; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--outline); background: var(--yellow); display: grid; place-items: center; font-weight: 800; font-size: 15px; }
+.out b { font-family: var(--f-display); font-weight: 400; font-size: 20px; }
+.out span { font-size: 12.5px; color: var(--muted); }
+.out:hover { background: #FFF8D6; }
+.out:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--outline); }
+.card3 .toast { text-align: center; font-size: 13px; min-height: 1.2em; }
+.more { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.card3 .aibox { margin-top: auto; border-top: 2px dashed var(--outline); padding: 10px 0 0; display: grid; gap: 6px; justify-items: center; text-align: center; }
+.card3 .ai-status { font-size: 12px; color: var(--muted); }
+.card3 .btn { background: #fff; }
+.card3 .btn.primary { background: var(--yellow); }
+
+/* ── 자세히 보기 (평소에는 숨김) ── */
+.detail { position: fixed; inset: 0; z-index: 50; background: color-mix(in srgb, var(--sky) 85%, transparent); display: grid;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.detail-in { width: min(1400px, 100%); margin: 0 auto; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; max-height: 100%; min-height: 0; }
+.detail-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 14px 18px; border-bottom: 2px dashed var(--outline); }
+.detail-top h2 { font-size: 22px; }
+.detail-top .tabs { flex: 1; gap: 6px; align-items: center; }
+.detail .tab { border: 2px solid var(--outline); border-radius: 999px; padding: 4px 14px; font-size: 14.5px; background: var(--surface); color: var(--ink); }
+.detail .tab[aria-selected="true"] { background: var(--yellow); color: var(--badge-ink); padding-bottom: 4px; }
+.detail-body { overflow: auto; padding: 18px 20px 26px; min-height: 0; }
+.detail .tabpanel { margin-top: 0; display: grid; gap: 16px; }
+.detail .chips { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+@media (max-width: 760px) { .detail .chips { grid-template-columns: minmax(0, 1fr); } }
+.detail .toc-row:last-child { border-bottom: 2px dashed var(--outline); }
+.edit-meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+/* 노트북처럼 화면 높이가 낮을 때 한 화면에 맞추기 */
+@media (min-width: 981px) and (max-height: 880px) {
+  .cloud { padding: 30px 48px 22px; gap: 14px; min-height: calc(100vh - 20px); }
+  .stage { padding-block: 10px; }
+  .hero-title { gap: 2px; }
+  .hero-title h1 { font-size: clamp(40px, 4.4vw, 58px); }
+  .slogan { font-size: 13.5px; padding: 2px 14px; }
+  .tagline { font-size: 13.5px; }
+  .peek-mascot { top: 20px; width: 76px; height: 76px; } .peek-blob { top: 30px; width: 70px; height: 64px; }
+  .card3 { padding: 24px 18px 14px; gap: 8px; }
+  .card3 h2 { font-size: 24px; }
+  .card3 .drop { min-height: 120px; padding: 12px; gap: 6px; }
+  .card3 .drop .doc { width: 48px; height: 48px; }
+  .card3 .drop .big { font-size: 16px; }
+  .s-total { font-size: 46px; }
+  .s-areas { padding: 5px 10px; }
+  .s-areas li { font-size: 12.5px; padding: 1px 0; }
+  .s-first { padding: 6px 10px; }
+  .out { padding: 10px 14px 10px 52px; }
+  .out b { font-size: 18px; }
+}
+@media (min-width: 981px) and (max-height: 740px) {
+  .tagline, .footnote { display: none; }
+  .card3 .step { display: none; }
+}
 </style>
 
 
@@ -386,132 +509,121 @@ textarea#raw { min-height: 60vh; font-size: 13.5px; background: var(--sunken); }
       <ellipse cx="38" cy="82" rx="6" ry="3.6" fill="#FFB4B4"/><ellipse cx="82" cy="82" rx="6" ry="3.6" fill="#FFB4B4"/>
       <path d="M52 82c2 6 14 6 16 0z" fill="#FF8C8C" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
     </symbol>
+    <symbol id="blob" viewBox="0 0 100 90">
+      <path d="M18 30c2-16 20-24 34-18 10-10 30-6 34 8 14 4 16 22 6 30 6 14-8 28-24 22-10 10-30 8-36-4-16 2-26-14-18-26-8-6-6-14 4-12z" fill="#8DB8F2" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="40" cy="44" r="3.4" fill="currentColor"/><circle cx="60" cy="44" r="3.4" fill="currentColor"/>
+      <path d="M43 54c4 4 10 4 14 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="clip" viewBox="0 0 24 44"><path d="M8 40V10a6 6 0 0 1 12 0v24a4 4 0 0 1-8 0V14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
   </defs>
 </svg>
 
-<header class="appbar">
-  <div class="appbar-in">
-    <svg class="mark" aria-hidden="true" style="color:#1D1D1F"><use href="#mascot"/></svg>
-    <span class="appname">쫑알톡톡<small>모의수업 계획안 피드백 친구</small></span>
-    <span class="spacer"></span>
-    <label class="btn-bar" for="file"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 11V3M4.5 6.5 8 3l3.5 3.5M3 13h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>계획안 올리기</label>
-  </div>
-</header>
+<!-- 첫 화면: 구름 테두리 안에 카드 세 장 (올리기 · 간략 결과 · 결과물 출력) -->
+<main class="stage">
+  <div class="cloud">
+    <svg class="sparkle" style="top:2%;left:6%"><use href="#spark"/></svg>
+    <svg class="sparkle s2" style="top:10%;right:5%;width:22px;height:22px"><use href="#spark"/></svg>
+    <svg class="sparkle s3" style="bottom:7%;left:3%;width:20px;height:20px"><use href="#spark"/></svg>
+    <svg class="sparkle" style="bottom:3%;right:12%;width:18px;height:18px"><use href="#spark"/></svg>
 
-<div class="app">
-  <!-- 왼쪽: 소개 · 파일 올리기 · 읽은 파일 · Claude 채점 -->
-  <aside class="side" aria-label="계획안 파일">
-    <div class="hello paper">
-      <svg class="hello-mascot" aria-hidden="true" style="color:#1D1D1F"><use href="#mascot"/></svg>
-      <p class="bubble">쫑알쫑알 나누면,<br>수업 아이디어가 <b>톡톡!</b></p>
-    </div>
+    <header class="hero-title">
+      <p class="slogan">쫑알쫑알 나누면, 수업 아이디어가 톡톡!</p>
+      <h1>쫑알톡톡</h1>
+      <p class="tagline">모의수업 계획안 피드백 친구</p>
+    </header>
 
-    <label class="drop paper" id="drop" for="file">
-      <span class="side-title"><span class="badge">1</span>계획안 올리기</span>
-      <span class="drop-in">
-        <svg class="doc" viewBox="0 0 70 70" aria-hidden="true" style="color:var(--outline)">
-          <rect x="12" y="6" width="38" height="50" rx="6" fill="var(--surface)" stroke="currentColor" stroke-width="3"/>
-          <path d="M20 19h22M20 28h18M20 37h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-          <circle cx="50" cy="50" r="14" fill="var(--yellow)" stroke="currentColor" stroke-width="3"/>
-          <path d="M50 57V43M44.5 48.5 50 43l5.5 5.5" stroke="#1D1D1F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-        <span class="big">파일을 끌어다 놓거나<br>눌러서 고르세요</span>
-        <span class="types" aria-label="지원 형식"><span style="--c:var(--c-interaction)">HWP</span><span style="--c:var(--c-flex)">HWPX</span><span style="--c:var(--c-integration)">DOCX</span><span style="--c:var(--c-play)">PDF</span><span style="--c:var(--c-materials)">TXT</span></span>
-        <span class="sub">파일은 이 브라우저 안에서만 읽고 저장하지 않아요.</span>
-      </span>
-      <input type="file" id="file" accept=".hwp,.hwpx,.docx,.pdf,.txt,.md" class="sr">
-    </label>
-
-    <div class="fileinfo paper" aria-live="polite">
-      <span class="side-title"><span class="badge" style="--c:var(--c-interaction)">2</span>읽은 파일</span>
-      <div class="filerow">
-        <span class="fileicon" id="ficon" aria-hidden="true">예시</span>
-        <div style="min-width:0">
+    <div class="cards3">
+      <!-- 1. 계획안 올리기 -->
+      <section class="card3 c-yellow" aria-labelledby="h1-up">
+        <svg class="clip" aria-hidden="true"><use href="#clip"/></svg>
+        <p class="step">STEP 01</p>
+        <h2 id="h1-up">계획안 올리기</h2>
+        <label class="drop" id="drop" for="file">
+          <svg class="doc" viewBox="0 0 70 70" aria-hidden="true" style="color:var(--outline)">
+            <rect x="12" y="6" width="38" height="50" rx="6" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            <path d="M20 19h22M20 28h18M20 37h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="50" cy="50" r="14" fill="#fff" stroke="currentColor" stroke-width="3"/>
+            <path d="M50 57V43M44.5 48.5 50 43l5.5 5.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <span class="big">여기에 파일을 놓거나<br>눌러서 고르세요</span>
+          <span class="types">HWP · HWPX · DOCX · PDF</span>
+          <input type="file" id="file" accept=".hwp,.hwpx,.docx,.pdf,.txt,.md" class="sr">
+        </label>
+        <div class="filebox" aria-live="polite">
           <p class="fname" id="fname">예시 계획안</p>
           <p class="fmeta" id="fmeta"></p>
+          <p class="status" id="fstatus" hidden></p>
+          <p class="example" id="example-note">지금은 예시 계획안 결과예요.</p>
         </div>
-      </div>
-      <p class="status" id="fstatus" hidden></p>
-      <p class="example" id="example-note">오른쪽 피드백지는 <b>예시 계획안</b>으로 만든 거예요. 내 계획안을 올리면 바로 바뀌어요.</p>
-      <div>
-        <p class="fhelp" style="margin-bottom:6px">계획안에서 찾은 칸</p>
-        <div class="fields" id="fchips"></div>
-      </div>
-      <div class="side-actions">
-        <button class="btn small" type="button" data-tab="edit">읽은 내용 확인·수정</button>
-        <button class="linkish" id="btn-manual" type="button">파일 없이 직접 쓰기</button>
-      </div>
-    </div>
+      </section>
 
-    <div class="aibox paper" aria-live="polite">
-      <span class="side-title"><span class="badge">3</span>Claude 정밀 채점</span>
-      <p class="ai-status" id="ai-status">Claude 연결을 확인하고 있어요…</p>
-      <div class="ai-actions">
-        <button class="btn primary small" id="ai-run" type="button" disabled>정밀 채점하기</button>
-        <button class="btn small" id="ai-stop" type="button" hidden>멈추기</button>
-      </div>
-      <label class="note" id="ai-auto-wrap" hidden><input type="checkbox" id="ai-auto" checked> 파일을 올리면 바로 정밀 채점</label>
-    </div>
+      <!-- 2. 간략 결과 -->
+      <section class="card3 c-sky" aria-labelledby="h2-res" aria-live="polite">
+        <svg class="clip" aria-hidden="true"><use href="#clip"/></svg>
+        <p class="step">STEP 02</p>
+        <h2 id="h2-res">간략 결과</h2>
+        <p class="s-title" id="s-title"></p>
+        <div class="s-score"><span class="s-total" id="s-total">0</span><span class="s-den">/ 100</span><span class="s-src" id="s-src"></span></div>
+        <ul class="s-areas" id="s-areas"></ul>
+        <div class="s-first">
+          <p class="s-k">가장 먼저 고칠 것</p>
+          <ol id="s-first"></ol>
+        </div>
+      </section>
 
-    <div class="rules" aria-label="운영 원칙">
-      <span class="rule">채점 초안 · 교수 확정 전</span>
-      <span class="rule">원문 근거로만 평가</span>
-      <span class="rule">학생·유아 실명 금지</span>
-    </div>
-  </aside>
-
-  <!-- 오른쪽: 작업 영역 -->
-  <main class="main">
-    <div class="tabs" role="tablist" aria-label="작업 화면">
-      <button class="tab" role="tab" id="tab-student" data-tab="student" aria-selected="true" aria-controls="panel-student">학생용 피드백지</button>
-      <button class="tab" role="tab" id="tab-teacher" data-tab="teacher" aria-selected="false" aria-controls="panel-teacher">교수자용 채점표</button>
-      <button class="tab" role="tab" id="tab-edit" data-tab="edit" aria-selected="false" aria-controls="editor-panel">읽은 내용 확인·수정</button>
-      <button class="tab" role="tab" id="tab-raw" data-tab="raw" aria-selected="false" aria-controls="raw-panel">원문</button>
-    </div>
-
-    <!-- 학생용 피드백지 -->
-    <section class="tabpanel" id="panel-student" role="tabpanel" aria-labelledby="tab-student">
-      <article class="report paper">
-        <div class="slide-wrap">
-          <div class="slide">
-            <svg class="sparkle" style="top:-6px;left:22%"><use href="#spark"/></svg>
-            <svg class="sparkle s2" style="bottom:-4px;right:8%;width:20px;height:20px"><use href="#spark"/></svg>
-            <svg class="sparkle s3" style="top:40%;left:-4px;width:18px;height:18px"><use href="#spark"/></svg>
-            <div class="slide-in">
-              <div class="slide-left">
-                <p class="label">FEEDBACK SHEET</p>
-                <h2>모의수업<br>계획안 피드백</h2>
-                <p class="sub" id="r-sub"></p>
-                <div class="mascot-row">
-                  <svg class="mascot" viewBox="0 0 230 150" aria-hidden="true" style="color:var(--outline)">
-                    <path d="M20 128 L112 112 L112 140 L20 146 Z" fill="var(--surface)" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
-                    <path d="M204 128 L112 112 L112 140 L204 146 Z" fill="var(--surface)" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
-                    <path d="M36 128l56-9M36 136l56-8M132 119l56 9M132 128l56 8" stroke="var(--soft-line)" stroke-width="2.4" stroke-linecap="round"/>
-                    <use href="#mascot" x="55" y="2" width="120" height="120" style="color:#1D1D1F"/>
-                    <path d="M150 96l26-30" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                    <path d="M172 62l8-9 6 5-8 9z" fill="#FFD84D" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
-                    <path d="M190 30c4 4 4 10 0 14s-10 2-9-3 7-3 9 1" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                    <path d="M24 64l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z" fill="var(--surface)" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
-                  </svg>
-                  <div class="actions">
-                    <button class="btn primary" id="btn-docx" type="button">피드백지 내려받기 (.docx)</button>
-                    <button class="btn" id="btn-copy" type="button">텍스트 복사</button>
-                    <span class="toast" id="toast" role="status"></span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <p class="toc-title">영역별 수준</p>
-                <div class="chips" id="chips" aria-label="영역별 수준"></div>
-                <div class="legend-growth" id="growth-legend"></div>
-              </div>
-            </div>
+      <!-- 3. 결과물 출력 -->
+      <section class="card3 c-grey" aria-labelledby="h3-out">
+        <svg class="clip" aria-hidden="true"><use href="#clip"/></svg>
+        <p class="step">STEP 03</p>
+        <h2 id="h3-out">결과물 출력</h2>
+        <div class="outs">
+          <button class="out" id="btn-docx" type="button"><b>학생용 피드백지</b><span>강점 · 보완점 · 종합의견 (.docx)</span></button>
+          <button class="out" id="btn-tdocx" type="button"><b>교수자용 채점표</b><span>20개 항목 점수 · 근거 (.docx)</span></button>
+        </div>
+        <span class="toast" id="toast" role="status"></span>
+        <span class="toast" id="toast2" role="status" hidden></span>
+        <div class="more">
+          <button class="btn small" type="button" data-tab="student">자세히 보기</button>
+          <button class="btn small" id="btn-copy" type="button">텍스트 복사</button>
+        </div>
+        <div class="aibox">
+          <div class="ai-actions">
+            <button class="btn small primary" id="ai-run" type="button" disabled>Claude 정밀 채점</button>
+            <button class="btn small" id="ai-stop" type="button" hidden>멈추기</button>
           </div>
+          <p class="ai-status" id="ai-status">Claude 연결을 확인하고 있어요…</p>
+          <label class="note" id="ai-auto-wrap" hidden><input type="checkbox" id="ai-auto" checked> 올리면 바로 정밀 채점</label>
         </div>
+      </section>
+    </div>
 
+    <svg class="peek-mascot" aria-hidden="true" style="color:#1D1D1F"><use href="#mascot"/></svg>
+    <svg class="peek-blob" aria-hidden="true" style="color:#1D1D1F"><use href="#blob"/></svg>
+    <p class="footnote">채점 초안 — 교수 확정 전 · 파일은 이 브라우저 안에서만 읽고 저장하지 않아요</p>
+  </div>
+</main>
+
+<!-- 자세히 보기 (평소에는 숨김) -->
+<div class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="detail-h" hidden>
+  <div class="detail-in paper">
+    <div class="detail-top">
+      <h2 id="detail-h">자세히 보기</h2>
+      <div class="tabs" role="tablist" aria-label="자세히 보기">
+        <button class="tab" role="tab" id="tab-student" data-tab="student" aria-selected="true" aria-controls="panel-student">학생용 피드백지</button>
+        <button class="tab" role="tab" id="tab-teacher" data-tab="teacher" aria-selected="false" aria-controls="panel-teacher">교수자용 채점표</button>
+        <button class="tab" role="tab" id="tab-edit" data-tab="edit" aria-selected="false" aria-controls="editor-panel">읽은 내용 수정</button>
+        <button class="tab" role="tab" id="tab-raw" data-tab="raw" aria-selected="false" aria-controls="raw-panel">원문</button>
+      </div>
+      <button class="btn small" id="detail-close" type="button">닫기 ✕</button>
+    </div>
+    <div class="detail-body">
+      <!-- 학생용 피드백지 -->
+      <section class="tabpanel" id="panel-student" role="tabpanel" aria-labelledby="tab-student">
+        <p class="sub" id="r-sub"></p>
         <p class="draft-line"><span class="src-badge" id="src-badge"></span><span>채점 초안 — 교수 확정 전</span></p>
+        <div class="chips" id="chips" aria-label="영역별 수준"></div>
+        <div class="legend-growth" id="growth-legend"></div>
         <div id="privacy"></div>
-
         <section class="fb-sec" aria-labelledby="h-str">
           <h3 id="h-str"><span class="badge">1</span>강점</h3>
           <ul class="strengths" id="fb-strengths"></ul>
@@ -524,47 +636,31 @@ textarea#raw { min-height: 60vh; font-size: 13.5px; background: var(--sunken); }
           <h3 id="h-all"><span class="badge">3</span>종합의견</h3>
           <div class="overall" id="fb-overall"></div>
         </section>
-        <p class="sign">교수 확인 <span></span> (서명)</p>
-      </article>
-    </section>
+      </section>
 
-    <!-- 교수자용 채점표 -->
-    <section class="tabpanel" id="panel-teacher" role="tabpanel" aria-labelledby="tab-teacher" hidden>
-      <article class="report paper">
+      <!-- 교수자용 채점표 -->
+      <section class="tabpanel" id="panel-teacher" role="tabpanel" aria-labelledby="tab-teacher" hidden>
         <div class="t-head">
-          <div>
-            <p class="label">SCORE SHEET · 학생에게 주지 않음</p>
-            <h2>교수자용 채점표</h2>
-            <p class="draft-line"><span class="src-badge" id="t-src"></span><span class="draft-red">채점 초안 — 교수 확정 전</span></p>
-          </div>
+          <p class="draft-line"><span class="src-badge" id="t-src"></span><span class="draft-red">채점 초안 — 교수 확정 전 · 학생에게 주지 않음</span></p>
           <div class="total"><span class="total-n" id="t-total">0</span><span class="total-d">/ 100</span></div>
-          <div class="actions">
-            <button class="btn primary" id="btn-tdocx" type="button">채점표 내려받기 (.docx)</button>
-            <label class="note"><input type="checkbox" id="show-score"> 학생용 피드백지에 점수 표시 (교수 확정 후)</label>
-            <span class="toast" id="toast2" role="status"></span>
-          </div>
+          <label class="note"><input type="checkbox" id="show-score"> 학생용 피드백지에 점수 표시 (교수 확정 후)</label>
         </div>
         <div class="t-areas" id="t-areas"></div>
         <div class="tbl-wrap"><table class="rubric-table" id="t-table"></table></div>
         <p class="note" id="t-check"></p>
         <div class="t-grid">
-          <section class="t-box">
-            <h3>발문 분류 <small id="t-qsum"></small></h3>
-            <ul class="qlist" id="t-qs"></ul>
-          </section>
-          <section class="t-box">
-            <h3>교수 확인 필요</h3>
-            <ul class="plain" id="t-prof"></ul>
-            <h3 style="margin-top:14px">교수자 종합의견 초안</h3>
-            <dl class="comment" id="t-comment"></dl>
-          </section>
+          <section class="t-box"><h3>발문 분류 <small id="t-qsum"></small></h3><ul class="qlist" id="t-qs"></ul></section>
+          <section class="t-box"><h3>교수 확인 필요</h3><ul class="plain" id="t-prof"></ul><h3 style="margin-top:14px">교수자 종합의견 초안</h3><dl class="comment" id="t-comment"></dl></section>
         </div>
-      </article>
-    </section>
+      </section>
 
-    <section class="tabpanel" id="editor-panel" role="tabpanel" aria-labelledby="tab-edit" hidden>
-      <div class="edit-wrap paper">
-        <h2>읽은 내용 확인·수정</h2>
+      <!-- 읽은 내용 수정 -->
+      <section class="tabpanel" id="editor-panel" role="tabpanel" aria-labelledby="tab-edit" hidden>
+        <div class="edit-meta">
+          <span class="fileicon" id="ficon" aria-hidden="true">예시</span>
+          <div class="fields" id="fchips"></div>
+          <button class="linkish" id="btn-manual" type="button">파일 없이 직접 쓰기</button>
+        </div>
         <p class="note">칸이 잘못 나뉘었으면 여기서 고치세요. 고치는 즉시 다시 채점돼요. 활동방법의 [도입]·[전개]·[마무리] 표시는 단계 구분에 쓰여요.</p>
         <form class="editor" id="editor" autocomplete="off">
           <div class="field"><label for="f-title">활동명</label><input type="text" id="f-title" name="title"></div>
@@ -572,40 +668,32 @@ textarea#raw { min-height: 60vh; font-size: 13.5px; background: var(--sunken); }
             <label for="f-age">대상 연령</label>
             <select id="f-age" name="age">
               <option value="">확인 안 됨</option>
-              <option value="만 0세">만 0세</option>
-              <option value="만 1세">만 1세</option>
-              <option value="만 2세">만 2세</option>
-              <option value="만 3세">만 3세</option>
-              <option value="만 4세">만 4세</option>
-              <option value="만 5세">만 5세</option>
+              <option value="만 0세">만 0세</option><option value="만 1세">만 1세</option><option value="만 2세">만 2세</option>
+              <option value="만 3세">만 3세</option><option value="만 4세">만 4세</option><option value="만 5세">만 5세</option>
               <option value="혼합연령">혼합연령</option>
             </select>
           </div>
           <div class="field"><label for="f-type">활동 유형</label><input type="text" id="f-type" name="type"></div>
-          <div class="field" style="--c:var(--c-materials)"><label for="f-goals">활동 목표 <span class="tag">01~03</span></label><textarea id="f-goals" name="goals"></textarea></div>
-          <div class="field" style="--c:var(--c-integration)"><label for="f-areas">누리과정 관련요소 <span class="tag">04~05</span></label><textarea id="f-areas" name="areas"></textarea></div>
-          <div class="field" style="--c:var(--c-observation)"><label for="f-materials">활동자료 <span class="tag">18</span></label><textarea id="f-materials" name="materials"></textarea></div>
-          <div class="field" style="--c:var(--c-play)"><label for="f-play">놀이 출발점 <span class="tag">06</span></label><textarea id="f-play" name="play"></textarea></div>
-          <div class="field" style="--c:var(--c-observation)"><label for="f-notes">유의사항 <span class="tag">18</span></label><textarea id="f-notes" name="notes"></textarea></div>
-          <div class="field" style="--c:var(--c-eval)"><label for="f-obs">평가·관찰 <span class="tag">20</span></label><textarea id="f-obs" name="obs"></textarea></div>
-          <div class="field wide" style="--c:var(--c-flex)"><label for="f-flow">활동방법 (도입·전개·마무리, T/C 대화) <span class="tag">06~17</span></label><textarea id="f-flow" name="flow" style="min-height:260px"></textarea></div>
-          <div class="field" style="--c:var(--c-interaction)"><label for="f-questions">예상 발문 (따로 쓴 경우) <span class="tag">14~16</span></label><textarea id="f-questions" name="questions"></textarea></div>
-          <div class="field" style="--c:var(--c-flex)"><label for="f-alt">확장·대안 <span class="tag">13·16</span></label><textarea id="f-alt" name="alt"></textarea></div>
+          <div class="field"><label for="f-goals">활동 목표</label><textarea id="f-goals" name="goals"></textarea></div>
+          <div class="field"><label for="f-areas">누리과정 관련요소</label><textarea id="f-areas" name="areas"></textarea></div>
+          <div class="field"><label for="f-materials">활동자료</label><textarea id="f-materials" name="materials"></textarea></div>
+          <div class="field"><label for="f-play">놀이 출발점</label><textarea id="f-play" name="play"></textarea></div>
+          <div class="field"><label for="f-notes">유의사항</label><textarea id="f-notes" name="notes"></textarea></div>
+          <div class="field"><label for="f-obs">평가·관찰</label><textarea id="f-obs" name="obs"></textarea></div>
+          <div class="field wide"><label for="f-flow">활동방법 (도입·전개·마무리, T/C 대화)</label><textarea id="f-flow" name="flow" style="min-height:240px"></textarea></div>
+          <div class="field"><label for="f-questions">예상 발문 (따로 쓴 경우)</label><textarea id="f-questions" name="questions"></textarea></div>
+          <div class="field"><label for="f-alt">확장·대안</label><textarea id="f-alt" name="alt"></textarea></div>
         </form>
-      </div>
-    </section>
+      </section>
 
-    <section class="tabpanel" id="raw-panel" role="tabpanel" aria-labelledby="tab-raw" hidden>
-      <div class="edit-wrap paper">
-        <h2>파일에서 읽은 원문</h2>
-        <p class="note">칸 제목을 찾지 못한 내용은 이 원문에서 확인할 수 있어요.</p>
+      <section class="tabpanel" id="raw-panel" role="tabpanel" aria-labelledby="tab-raw" hidden>
         <label class="sr" for="raw">원문</label>
         <textarea id="raw" readonly></textarea>
-      </div>
-    </section>
-    <textarea id="copy-fallback" class="sr" aria-hidden="true" tabindex="-1"></textarea>
-  </main>
+      </section>
+    </div>
+  </div>
 </div>
+<textarea id="copy-fallback" class="sr" aria-hidden="true" tabindex="-1"></textarea>
 
 <script>
 (() => {
@@ -772,13 +860,13 @@ const Q_LABEL = { open: '개방형', closed: '폐쇄형', suggest: '제안·권�
 
 /* ───────── 평가 루브릭 (mock-lesson-plan-scoring 스킬: 7개 영역 · 20개 항목 · 100점, 항목별 1~5점) ───────── */
 const AREA_DEFS = [
-  { key: 'goal', name: '활동 목표의 적절성', items: [1, 2, 3], color: 'var(--c-materials)' },
-  { key: 'nuri', name: '누리과정 연계성', items: [4, 5], color: 'var(--c-integration)' },
-  { key: 'content', name: '활동 내용의 적절성', items: [6, 7, 8, 9], color: 'var(--c-play)' },
-  { key: 'flow', name: '활동 전개의 체계성', items: [10, 11, 12, 13], color: 'var(--c-flex)' },
-  { key: 'talk', name: '교사의 발문 및 상호작용', items: [14, 15, 16, 17], color: 'var(--c-interaction)' },
-  { key: 'env', name: '활동자료 및 환경 구성', items: [18, 19], color: 'var(--c-observation)' },
-  { key: 'eval', name: '평가 및 확장활동', items: [20], color: 'var(--c-eval)' }
+  { key: 'goal', name: '활동 목표의 적절성', short: '활동 목표', items: [1, 2, 3], color: 'var(--c-materials)' },
+  { key: 'nuri', name: '누리과정 연계성', short: '누리과정 연계', items: [4, 5], color: 'var(--c-integration)' },
+  { key: 'content', name: '활동 내용의 적절성', short: '활동 내용', items: [6, 7, 8, 9], color: 'var(--c-play)' },
+  { key: 'flow', name: '활동 전개의 체계성', short: '활동 전개', items: [10, 11, 12, 13], color: 'var(--c-flex)' },
+  { key: 'talk', name: '교사의 발문 및 상호작용', short: '발문·상호작용', items: [14, 15, 16, 17], color: 'var(--c-interaction)' },
+  { key: 'env', name: '활동자료 및 환경 구성', short: '자료·환경', items: [18, 19], color: 'var(--c-observation)' },
+  { key: 'eval', name: '평가 및 확장활동', short: '평가·확장', items: [20], color: 'var(--c-eval)' }
 ];
 const ITEMS = {
   1: ['유아의 연령과 발달 수준에 적합한 목표 설정', '유아의 연령, 언어·인지·사회정서 발달에 맞는 목표인가?', '연령에 맞고 경험 가능한 목표', '지나치게 어렵거나 추상적인 목표'],
@@ -1218,7 +1306,14 @@ function renderAll() {
   $('t-prof').innerHTML = FB.profCheck.length ? FB.profCheck.map(p => `<li>${nn(p.item)} ${esc(ITEMS[p.item]?.[0] || '')} — ${esc(p.reason)}</li>`).join('') : '<li>특별히 확인이 필요한 항목은 없어요.</li>';
   $('t-comment').innerHTML = `<dt>강점</dt><dd>${esc(FB.teacher.strength)}</dd><dt>보완점</dt><dd>${esc(FB.teacher.improve)}</dd><dt>종합의견</dt><dd>${esc(FB.teacher.overall)}</dd>`;
 
-  // 사이드바
+  // 간략 결과 카드
+  $('s-title').textContent = `${f.title || '활동명 없음'}${f.age ? ' · ' + f.age : ''}`;
+  $('s-total').textContent = T.total;
+  $('s-src').textContent = SOURCE === 'ai' ? 'Claude 채점' : '자동 채점';
+  $('s-areas').innerHTML = T.areas.map(a => `<li class="s-${a.level}"><span>${esc(a.short)}</span><span class="st">${ICON[a.level]}${a.sum}/${a.max}</span></li>`).join('');
+  $('s-first').innerHTML = (FB.overall.first.length ? FB.overall.first : ['큰 보완점이 없어요. 동료와 바꿔 읽어 보기']).map(t => `<li>${esc(t)}</li>`).join('');
+
+  // 파일 정보
   $('fname').textContent = state.fileName;
   const found = FIELDS.filter(k => state.form[k]);
   $('fmeta').textContent = state.fileType ? `${state.fileType} · ${state.raw.length.toLocaleString()}자 · 항목 ${found.length}/${FIELDS.length}개 인식` : `${state.isSample ? '기능 시연용 예시' : '직접 입력'} · 항목 ${found.length}/${FIELDS.length}개`;
@@ -1237,9 +1332,19 @@ function showTab(name) {
   currentTab = name;
   for (const [k, [t, p]] of Object.entries(TABS)) { $(t).setAttribute('aria-selected', String(k === name)); $(p).hidden = k !== name; }
 }
+let lastFocus = null;
+function openDetail(tab) {
+  if ($('detail').hidden) { lastFocus = document.activeElement; $('detail').hidden = false; document.body.style.overflow = 'hidden'; }
+  showTab(tab || 'student');
+  $('tab-' + (tab || 'student')).focus();
+}
+function closeDetail() { $('detail').hidden = true; document.body.style.overflow = ''; lastFocus?.focus?.(); }
+$('detail-close').addEventListener('click', closeDetail);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('detail').hidden) closeDetail(); });
+$('detail').addEventListener('click', (e) => { if (e.target === $('detail')) closeDetail(); });
 document.addEventListener('click', (e) => {
   const b = e.target.closest('[data-tab]');
-  if (b) { showTab(b.dataset.tab); if (b.closest('.side')) window.scrollTo({ top: 0 }); }
+  if (b) openDetail(b.dataset.tab);
   const j = e.target.closest('[data-jump]');
   if (j) {
     const area = AREA_DEFS.find(a => a.key === j.dataset.jump);
@@ -1253,7 +1358,7 @@ $('editor').addEventListener('input', () => { clearTimeout(timer); timer = setTi
 $('editor').addEventListener('submit', (e) => e.preventDefault());
 $('btn-manual').addEventListener('click', () => {
   state.raw = ''; state.fileName = '직접 입력'; state.fileType = ''; state.isSample = false;
-  fillForm({}); clearAI(); runAll(); showTab('edit'); $('f-title').focus();
+  fillForm({}); clearAI(); runAll(); openDetail('edit'); $('f-title').focus();
 });
 $('show-score').addEventListener('change', (e) => { state.showScore = e.target.checked; renderAll(); });
 
@@ -1485,8 +1590,7 @@ async function handleFile(file) {
     if (text.replace(/\s/g, '').length < 20) throw new Error('파일에서 글자를 거의 찾지 못했어요. 내용이 그림으로만 되어 있는지 확인해 주세요.');
     loadText(text, file.name, TYPES[ext], false);
     const found = FIELDS.filter(k => state.form[k]).length;
-    setStatus(`채점 초안을 만들었어요. 계획안 항목 ${found}개를 찾았습니다.${found < 5 ? ' 잘못 나뉘었으면 ‘읽은 내용 확인·수정’에서 고쳐 주세요.' : ''}`, '');
-    showTab('student'); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    setStatus(`채점을 마쳤어요. 계획안 칸 ${found}개를 찾았어요.${found < 5 ? ' 잘못 나뉘었으면 ‘자세히 보기 → 읽은 내용 수정’에서 고쳐 주세요.' : ''}`, '');
     if (sample && $('ai-auto').checked) runAI();
   } catch (e) {
     console.error(e);
@@ -1751,7 +1855,7 @@ async function saveBlob(blob, filename, tid) {
   toast('내려받았어요.', tid);
 }
 $('btn-docx').addEventListener('click', () => saveBlob(buildStudentDocx(), `${safeBase()}_쫑알톡톡_피드백지.docx`, 'toast'));
-$('btn-tdocx').addEventListener('click', () => saveBlob(buildTeacherDocx(), `${safeBase()}_쫑알톡톡_채점표.docx`, 'toast2'));
+$('btn-tdocx').addEventListener('click', () => saveBlob(buildTeacherDocx(), `${safeBase()}_쫑알톡톡_채점표.docx`, 'toast'));
 $('btn-copy').addEventListener('click', () => {
   const text = studentText();
   const fallback = () => { const ta = $('copy-fallback'); ta.value = text; ta.select(); try { document.execCommand('copy'); toast('복사했어요.'); } catch (e) { toast('복사하지 못했어요.'); } };
