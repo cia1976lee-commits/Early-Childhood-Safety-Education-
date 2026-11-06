@@ -1,4 +1,4 @@
-name: Deploy 라온 to GitHub Pages
+name: Deploy 쫑알톡톡 to GitHub Pages
 
 on:
   push:
